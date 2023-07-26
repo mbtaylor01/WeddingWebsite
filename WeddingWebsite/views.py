@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 from pathlib import Path
 from django.conf import settings
 from django.views.generic.base import TemplateView
+from django.views.generic import View
 
 class HomePageView(TemplateView):
     template_name = "home.html"
@@ -38,9 +39,12 @@ def rsvppage(request):
 class ThankYouView(TemplateView):
     template_name = "thankyou.html"
 
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse("home"))
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect(reverse("home"))
+    
 
 class RegistryListView(ListView):
     template_name = "registry.html"
