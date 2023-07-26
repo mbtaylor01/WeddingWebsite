@@ -12,11 +12,11 @@ from pathlib import Path
 from django.conf import settings
 from django.views.generic.base import TemplateView
 
-def homepage(request):
-    return render(request, "home.html")
+class HomePageView(TemplateView):
+    template_name = "home.html"
 
-def infopage(request):
-    return render(request, "info.html")
+class InfoPageView(TemplateView):
+    template_name = "info.html"
 
 def rsvppage(request):
     if request.method == 'POST':
@@ -35,8 +35,8 @@ def rsvppage(request):
     else:
         return HttpResponseRedirect(reverse("home"))  # if someone tries to go to /rsvp directly
 
-def thankyoupage(request):
-    return render(request, 'thankyou.html')
+class ThankYouView(TemplateView):
+    template_name = "thankyou.html"
 
 def logout_view(request):
     logout(request)

@@ -1,13 +1,13 @@
-from .views import homepage, infopage, rsvppage, thankyoupage, logout_view, AccountInfoView, RegistryListView
+from .views import HomePageView, InfoPageView, rsvppage, ThankYouView, logout_view, AccountInfoView, RegistryListView
 from .views import registry_post_page, ForumListView, ThreadListView, create_thread_page, ChangeProfilePic
 from django.urls import path, reverse_lazy
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path("", homepage, name="home"),
-    path("info", infopage, name="info"),
+    path("", HomePageView.as_view(), name="home"),
+    path("info", InfoPageView.as_view(), name="info"),
     path("rsvp", rsvppage, name="rsvp"),
-    path("thankyou", thankyoupage, name="thankyou"),
+    path("thankyou", ThankYouView.as_view(), name="thankyou"),
     path("logout", logout_view, name="logout"),
     path("registry", RegistryListView.as_view(), name="registry"),
     path("reserve-item", registry_post_page, name="reserve-item"),
