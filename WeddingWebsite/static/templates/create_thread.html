@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+    {% block page_title %}Create Thread{% endblock %}
+
+    {% block css_file %}<link rel="stylesheet" href="{% static 'css/create_thread.css' %}">{% endblock %}
+
+    {% block content %}
+    <div class="movecenter">
+        <form method="POST" action="{% url "create-thread" %}">
+            {% csrf_token %}
+            {{ form.title }}<br><br>
+            {{ form.first_post }}
+            <button>Create</button>
+        </form>     
+        <a href="{% url "forum" %}">Cancel</a>
+    </div>
+
+    
+    {% endblock %}

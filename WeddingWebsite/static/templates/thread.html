@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_title %}placeholder{% endblock %}
+
+{% block css_file %}<link rel="stylesheet" href="{% static 'css/thread.css' %}">{% endblock %}
+
+{% block content %}
+
+{% for post in posts %}
+    <img src="{{ post.creator.profile_pic.url }}"/>{{ post.text }}<br><br>
+{% endfor %}
+
+{% for user in users %}
+    {{ user.username }}<br><br>
+{% endfor %}
+
+<div class='movemiddle'>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <button>Submit New Post</button>
+    </form>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

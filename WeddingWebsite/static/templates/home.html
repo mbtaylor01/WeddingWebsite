@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+    {% block page_title %}
+    Carder-Taylor Wedding
+    {% endblock %}
+
+    {% block css_file %}<link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+
+    {% block content %}
+    
+    <div class='date_rsvp'>
+        <div class='date'>
+            <p>June 30th, 2024</p>
+        </div>
+        <div class='rsvp'>
+            {% if user.is_authenticated%}
+                <a href="{% url 'rsvp' %}"><button type='button'>RSVP</button></a>
+            {% else %}
+                <a href="{% url "login" %}?next={% url 'rsvp' %}">Log in to RSVP</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endblock %}

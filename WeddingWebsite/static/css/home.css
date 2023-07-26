@@ -1,0 +1,15 @@
+.date_rsvp {
+    margin: auto;
+    width: 500px;
+}
+
+.date {
+    font-size: 4rem;
+    
+}
+
+.rsvp {
+    color: green;
+    margin: auto;
+    width: 100%;
+}

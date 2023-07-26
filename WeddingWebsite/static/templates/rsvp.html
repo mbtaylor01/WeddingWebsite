@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+    {% block page_title %}RSVP{% endblock %}
+
+    {% block css_file %}<link rel="stylesheet" href="{% static 'css/rsvp.css' %}">{% endblock %}
+
+    {% block content %}
+    <form action="/rsvp" method="POST">
+        {% csrf_token %}
+        <ul>
+            <li><label for="fullname">Full Name:</label>
+            <input id="fullname" name="fullname" type="text"></li>
+            <li><label for="additionals">How many people will you be bringing?</label>
+            <input id="additionals" name="additionals" type="text"></li>
+            <li><label for="allergies">Any allergies?</label>
+            <input id="allergies" name="allergies" type="text"></li>
+            <li><label for="alcohol">Favorite alcohol (we know you like Tequila mom):</label>
+            <input id="alcohol" name="alcohol" type="text"></li>
+            <li><label for="other">Anything else we should know?</label>
+            <input id="other" name="other" type="text"></li>
+        </ul>    
+        <button type="submit">Submit</button>
+    </form>
+    {% endblock %}

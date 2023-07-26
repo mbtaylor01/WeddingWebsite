@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+    {% block page_title %}Registry{% endblock %}
+
+    {% block css_file %}<link rel="stylesheet" href="{% static 'css/registry.css' %}">{% endblock %}
+
+    {% block content %}
+    
+    <ul class="registry">
+        {% for item in registry_items %}
+            <li>{{ item.title }}<br>
+                <a href="{{ item.image_link }}"><img src="{% static item.image.name|cut:"images/" %}"/></a>
+                {% if item.reserved_by %}
+                    {% if item.reserved_by == request.user.username %}
+                        <form action="{% url "reserve-item" %}" method="POST">
+                            {%csrf_token%}
+                            <input type="hidden" name="item_id" value={{ item.id }}>
+                        <button>RESERVED BY {{ item.reserved_by }} - click to unreserve</button>
+                    </form>
+                    {% else %}
+                        RESERVED BY {{ item.reserved_by }}
+                    {% endif %}
+                {% else %}
+                    <form action="{% url "reserve-item" %}" method="POST">
+                        {%csrf_token%}
+                        <input type="hidden" name="item_id" value={{ item.id }}>
+                    <button>RESERVE</button>
+                </form>
+                {% endif %}
+            </li><br>
+        {% endfor %}
+    </ul>
+    {% endblock %}

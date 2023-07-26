@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+{% comment %} If redirecting to a page that's not the home page {% endcomment %}
+{% if next and next != '/' %}  
+    Please log in to continue:
+    <br><br>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Log In</button>
+</form>
+
+<br><br>
+<a href="{% url "reset-password" %}">Forgot Password?</a>
+
+    
+{% endblock content %}
+

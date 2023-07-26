@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+    {% block page_title %}Forum{% endblock %}
+
+    {% block css_file %}<link rel="stylesheet" href="{% static 'css/forum.css' %}">{% endblock %}
+
+    {% block content %}
+    <div class="movecenter">
+        <a href="{% url "create-thread" %}">Create New Topic</a><br><br>
+    
+        {% for thread in threads %}
+        <a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a>
+            <br><br>
+        {% endfor %}
+ 
+        
+    </div>
+    {% endblock %}
