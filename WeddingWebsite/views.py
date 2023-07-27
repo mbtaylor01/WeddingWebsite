@@ -1,11 +1,11 @@
 import os
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from .models import RSVP, RegistryEntry, Thread, Post, CustomUser
 from django.contrib.auth import logout
-from django.views.generic import ListView
-from .forms import ThreadForm, PostForm, CustomUserForm
+from django.views.generic import ListView, CreateView
+from .forms import ThreadForm, PostForm, CustomUserForm, RSVPForm
 from django.utils.text import slugify
 from django.shortcuts import redirect
 from pathlib import Path
@@ -16,25 +16,22 @@ from django.views.generic import View
 class HomePageView(TemplateView):
     template_name = "home.html"
 
+
 class InfoPageView(TemplateView):
     template_name = "info.html"
 
-def rsvppage(request):
-    if request.method == 'POST':
-        rsvp_form = RSVP(
-            full_name = request.POST['fullname'],
-            additional_people = request.POST['additionals'],
-            allergies = request.POST['allergies'],
-            alcohol = request.POST['alcohol'],
-            other = request.POST['other'],
-            )
-        rsvp_form.save()
-        return HttpResponseRedirect(reverse("thankyou"))
-    
-    elif request.user.is_authenticated:
-        return render(request, 'rsvp.html')
-    else:
-        return HttpResponseRedirect(reverse("home"))  # if someone tries to go to /rsvp directly
+
+class RSVPPageView(CreateView):
+    model = RSVP
+    form_class = RSVPForm
+    template_name = "rsvp.html"
+    success_url = reverse_lazy("thankyou")
+
+    def get(self, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('home')
+        return super(RSVPPageView, self).get(*args, **kwargs)
+
 
 class ThankYouView(TemplateView):
     template_name = "thankyou.html"
@@ -72,6 +69,7 @@ def registry_post_page(request):
 
     return HttpResponseRedirect(reverse('registry'))
 
+
 class ForumListView(ListView):
     template_name = "forum.html"
     model = Thread
@@ -81,6 +79,7 @@ class ForumListView(ListView):
         if not self.request.user.is_authenticated:
             return redirect('home')
         return super(ForumListView, self).get(*args, **kwargs)
+
 
 class ThreadListView(ListView):
     template_name = "thread.html"
@@ -112,6 +111,7 @@ class ThreadListView(ListView):
         data = base_query.filter(thread_id=the_thread.id)
         return data
     
+
 def create_thread_page(request):
     if request.user.is_authenticated:
         if request.method == "GET":  # show the thread creation page
@@ -138,6 +138,7 @@ def create_thread_page(request):
 
     return HttpResponseRedirect(reverse("forum"))
     
+
 class ChangeProfilePic(TemplateView):
     template_name = "profile_pic.html"
 
@@ -166,6 +167,7 @@ class ChangeProfilePic(TemplateView):
                 os.remove(image.path)
         return redirect(user)
     
+
 class AccountInfoView(TemplateView):
     template_name = "account_info.html"
     

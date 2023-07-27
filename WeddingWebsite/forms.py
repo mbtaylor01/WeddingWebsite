@@ -1,6 +1,6 @@
 from django import forms
-from .models import Thread, Post, CustomUser
-from django.forms import ModelForm, Textarea
+from .models import Thread, Post, CustomUser, RSVP
+from django.forms import Textarea
 
 class ThreadForm(forms.ModelForm):
     first_post = forms.CharField(max_length=5000, widget=Textarea)
@@ -40,3 +40,17 @@ class CustomUserForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['profile_pic']
+
+
+class RSVPForm(forms.ModelForm):
+    class Meta:
+        model = RSVP
+        fields = '__all__'
+        labels = {
+            "full_name": "Full Name:",
+            "additional_people": "How many people will you be bringing?",
+            "allergies": "Any food allergies?",
+            "alcohol": "Favorite alcohol (we know you like Tequila mom):",
+            "other": "Anything else we should know?",
+        }
+          
