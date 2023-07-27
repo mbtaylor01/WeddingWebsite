@@ -17,6 +17,9 @@ class RegistryEntry(models.Model):
     image_link = models.URLField()
     reserved_by = models.CharField(max_length=500, blank=True, null=True)
 
+    def __str__(self):
+        return self.title
+
 class Thread(models.Model):
     title = models.CharField(max_length=500)
     creator = models.CharField(max_length=100)
@@ -27,6 +30,9 @@ class Thread(models.Model):
         return reverse("thread", kwargs={
             "threadslug": slugify(self.title),
             })
+    
+    def __str__(self):
+        return self.title
     
 class CustomUser(AbstractUser):
     profile_pic = models.ImageField(upload_to="profile_pics", default="profile_pics/default/default.png")
