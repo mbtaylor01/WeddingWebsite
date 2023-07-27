@@ -54,8 +54,8 @@ class RegistryListView(ListView):
         return super(RegistryListView, self).get(*args, **kwargs)
 
 
-def registry_post_page(request):
-    if request.method == 'POST':
+class RegistryPostView(View):
+    def post(self, request):
         reg_entry = RegistryEntry.objects.get(id=request.POST['item_id'])
 
         if reg_entry.reserved_by == request.user.username:  # the unreserve button
@@ -66,8 +66,8 @@ def registry_post_page(request):
             reg_entry.save()
         else:  # the item is reserved, but the page still displays the reserve button
             return HttpResponseRedirect(reverse('thankyou'))
-
-    return HttpResponseRedirect(reverse('registry'))
+        
+        return HttpResponseRedirect(reverse("registry"))
 
 
 class ForumListView(ListView):

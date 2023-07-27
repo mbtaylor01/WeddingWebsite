@@ -1,5 +1,5 @@
-from .views import HomePageView, InfoPageView, RSVPPageView, ThankYouView, LogoutView, AccountInfoView, RegistryListView
-from .views import registry_post_page, ForumListView, ThreadListView, create_thread_page, ChangeProfilePic
+from .views import HomePageView, InfoPageView, RSVPPageView, ThankYouView, LogoutView, AccountInfoView, RegistryListView, RegistryPostView
+from .views import ForumListView, ThreadListView, create_thread_page, ChangeProfilePic
 from django.urls import path, reverse_lazy
 from django.contrib.auth import views as auth_views
 
@@ -10,7 +10,7 @@ urlpatterns = [
     path("thankyou", ThankYouView.as_view(), name="thankyou"),
     path("logout", LogoutView.as_view(), name="logout"),
     path("registry", RegistryListView.as_view(), name="registry"),
-    path("reserve-item", registry_post_page, name="reserve-item"),
+    path("reserve-item", RegistryPostView.as_view(), name="reserve-item"),
     path("forum", ForumListView.as_view(), name="forum"),
     path("forum/create-thread", create_thread_page, name="create-thread"),
     path("forum/<slug:threadslug>", ThreadListView.as_view(), name="thread"),
