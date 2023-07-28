@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_title %}Not Found{% endblock %}
+
+{% block css_file %}<link rel="stylesheet" href="{% static 'css/404.css' %}">{% endblock %}
+
+{% block content %}
+<div class="movecenter">
+    <img src="{% static random_image %}"/>
+</div>
+{% endblock %}

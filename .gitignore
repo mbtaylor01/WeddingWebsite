@@ -12,6 +12,7 @@ prodstatic/
 pull_server_database.sh
 upload_code_no_database.sh
 upload_database.sh
+WeddingWebsite/static/pet_images/
 
 # Backup files # 
 *.bak 

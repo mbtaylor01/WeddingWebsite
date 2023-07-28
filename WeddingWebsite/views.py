@@ -12,6 +12,10 @@ from pathlib import Path
 from django.conf import settings
 from django.views.generic.base import TemplateView
 from django.views.generic import View
+from random import choice
+
+PET_DIR = os.path.join(settings.BASE_DIR, "WeddingWebsite", "static", "pet_images")
+PET_IMAGES = [str(image.name) for image in os.scandir(PET_DIR)]
 
 class HomePageView(TemplateView):
     template_name = "home.html"
@@ -176,6 +180,13 @@ class ChangeProfilePic(TemplateView):
 
 class AccountInfoView(TemplateView):
     template_name = "account_info.html"
-    
+
+
+def error_404(request, *args, **kwargs):
+   random_pet = choice(PET_IMAGES)
+
+   return render(request, "404.html", {
+       "random_image": f"pet_images/{random_pet}"
+   })
 
 
