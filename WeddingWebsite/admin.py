@@ -12,8 +12,15 @@ class RegistryAdmin(admin.ModelAdmin):
     list_display = ("title", "reserved_by")
 
 class RSVPAdmin(admin.ModelAdmin): 
-    list_filter = ("full_name", "additional_people", "allergies", "alcohol", "other")
-    list_display = ("full_name", "additional_people", "allergies", "alcohol", "other")
+    list_filter = ("additional_people", "allergies", "alcohol", "other")
+    list_display = ("user", "additional_people", "allergies", "alcohol", "other")
+
+    def user(self, instance):
+        # display one-to-one linked customuser.username field in Admin panel
+        try:
+            return instance.customuser.username
+        except RSVP.customuser.RelatedObjectDoesNotExist:
+            pass
 
 class ThreadAdmin(admin.ModelAdmin): 
     list_filter = ("creator", "creation_time",)
@@ -21,8 +28,10 @@ class ThreadAdmin(admin.ModelAdmin):
 
 
 fields = list(UserAdmin.fieldsets)
-fields[0] = (None, {'fields': ('username', 'password', 'profile_pic')})
+fields[0] = (None, {'fields': ('username', 'password', 'profile_pic', 'rsvp')})
 UserAdmin.fieldsets = tuple(fields)
+UserAdmin.list_display = ("username", "email", "profile_pic", "rsvp",)
+UserAdmin.list_filter = ("username", "email",)
 
 
 admin.site.register(RSVP, RSVPAdmin)

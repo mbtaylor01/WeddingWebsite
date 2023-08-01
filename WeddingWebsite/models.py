@@ -5,11 +5,23 @@ from django.utils.text import slugify
 from django.contrib.auth.models import AbstractUser
 
 class RSVP(models.Model):
-    full_name = models.CharField(max_length=100)
     additional_people = models.PositiveSmallIntegerField(null=True, blank=True)
     allergies = models.CharField(max_length=1000, blank=True)
     alcohol = models.CharField(max_length=1000, blank=True)
     other = models.CharField(max_length=5000, blank=True)
+
+    def __str__(self):
+        try:
+            return f"{self.customuser.username} + {self.additional_people}"
+        except RSVP.customuser.RelatedObjectDoesNotExist:
+            return "-"
+
+class CustomUser(AbstractUser):
+    profile_pic = models.ImageField(upload_to="profile_pics", default="profile_pics/default/default.png")
+    rsvp = models.OneToOneField(RSVP, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def get_absolute_url(self):
+        return reverse("change-profile-pic")
 
 class RegistryEntry(models.Model):
     title = models.CharField(max_length=500)
@@ -33,12 +45,6 @@ class Thread(models.Model):
     
     def __str__(self):
         return self.title
-    
-class CustomUser(AbstractUser):
-    profile_pic = models.ImageField(upload_to="profile_pics", default="profile_pics/default/default.png")
-
-    def get_absolute_url(self):
-        return reverse("change-profile-pic")
     
 class Post(models.Model):
     text = models.TextField()

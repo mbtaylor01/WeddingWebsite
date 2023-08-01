@@ -47,7 +47,6 @@ class RSVPForm(forms.ModelForm):
         model = RSVP
         fields = '__all__'
         labels = {
-            "full_name": "Full Name:",
             "additional_people": "How many people will you be bringing?",
             "allergies": "Any food allergies?",
             "alcohol": "Favorite alcohol (we know you like Tequila mom):",

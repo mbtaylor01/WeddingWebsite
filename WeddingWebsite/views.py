@@ -32,9 +32,18 @@ class RSVPPageView(CreateView):
     success_url = reverse_lazy("thankyou")
 
     def get(self, *args, **kwargs):
-        if not self.request.user.is_authenticated:
+        # if the user has already rsvp'd then don't want them to be able to rsvp again
+        if not self.request.user.is_authenticated or self.request.user.rsvp:
             return redirect('home')
         return super(RSVPPageView, self).get(*args, **kwargs)
+    
+    def form_valid(self, form):
+        # save the object with form.save(), then add that object to the appropriate user (one-to-one)
+        self.object = form.save()
+        user = CustomUser.objects.get(id=self.request.user.id)
+        user.rsvp = self.object
+        user.save()
+        return super().form_valid(form)
 
 
 class ThankYouView(TemplateView):

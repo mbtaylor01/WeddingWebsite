@@ -14,7 +14,11 @@
         </div>
         <div class='rsvp'>
             {% if user.is_authenticated%}
-                <a href="{% url 'rsvp' %}"><button type='button'>RSVP</button></a>
+                {% if not user.rsvp %}
+                    <a href="{% url 'rsvp' %}"><button type='button'>RSVP</button></a>
+                {% else %}
+                    You have RSVP'd - Thank You!
+                {% endif %}
             {% else %}
                 <a href="{% url "login" %}?next={% url 'rsvp' %}">Log in to RSVP</a>
             {% endif %}
