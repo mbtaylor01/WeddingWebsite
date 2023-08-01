@@ -6,10 +6,10 @@ from django.contrib.auth.models import AbstractUser
 
 class RSVP(models.Model):
     full_name = models.CharField(max_length=100)
-    additional_people = models.IntegerField()
-    allergies = models.CharField(max_length=1000)
-    alcohol = models.CharField(max_length=1000)
-    other = models.CharField(max_length=5000)
+    additional_people = models.PositiveSmallIntegerField(null=True, blank=True)
+    allergies = models.CharField(max_length=1000, blank=True)
+    alcohol = models.CharField(max_length=1000, blank=True)
+    other = models.CharField(max_length=5000, blank=True)
 
 class RegistryEntry(models.Model):
     title = models.CharField(max_length=500)
