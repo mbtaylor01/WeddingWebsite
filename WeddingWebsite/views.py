@@ -100,6 +100,11 @@ class ThreadListView(ListView):
     context_object_name = "posts"
     paginate_by = 5
 
+    def get(self, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('home')
+        return super(ThreadListView, self).get(*args, **kwargs)
+
     def post(self, request, threadslug):
         new_post = Post()
         new_post.text = request.POST['text']
