@@ -34,7 +34,7 @@ class RegistryEntry(models.Model):
 
 class Thread(models.Model):
     title = models.CharField(max_length=500)
-    creator = models.CharField(max_length=100)
+    creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     creation_time = models.DateTimeField(default=datetime.now, blank=True)
     slug = models.SlugField(default="")
 
