@@ -99,6 +99,7 @@ class ThreadListView(ListView):
     model = Post
     context_object_name = "posts"
     paginate_by = 5
+    ordering = ['creation_time']
 
     def get(self, *args, **kwargs):
         if not self.request.user.is_authenticated:

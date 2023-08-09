@@ -5,6 +5,7 @@
 __pycache__
 db.sqlite3
 uploads/profile_pics/
+uploads/images/mock*
 secrets.json
 old/
 DEPLOY/
