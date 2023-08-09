@@ -11,7 +11,7 @@
             <li>{{ item.title }}<br>
                 <a href="{{ item.image_link }}"><img src="{% static item.image.name|cut:"images/" %}"/></a>
                 {% if item.reserved_by %}
-                    {% if item.reserved_by == request.user.username %}
+                    {% if item.reserved_by == request.user %}
                         <form action="{% url "reserve-item" %}" method="POST">
                             {%csrf_token%}
                             <input type="hidden" name="item_id" value={{ item.id }}>

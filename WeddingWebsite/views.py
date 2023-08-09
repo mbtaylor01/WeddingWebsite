@@ -71,11 +71,11 @@ class RegistryPostView(View):
     def post(self, request):
         reg_entry = RegistryEntry.objects.get(id=request.POST['item_id'])
 
-        if reg_entry.reserved_by == request.user.username:  # the unreserve button
+        if reg_entry.reserved_by == request.user:  # the unreserve button
             reg_entry.reserved_by = None
             reg_entry.save()
         elif not reg_entry.reserved_by:  # the reserve button
-            reg_entry.reserved_by = request.user.username
+            reg_entry.reserved_by = request.user
             reg_entry.save()
         else:  # the item is reserved, but the page still displays the reserve button
             return HttpResponseRedirect(reverse('thankyou'))

@@ -27,7 +27,7 @@ class RegistryEntry(models.Model):
     title = models.CharField(max_length=500)
     image = models.ImageField(upload_to="images")
     image_link = models.URLField()
-    reserved_by = models.CharField(max_length=500, blank=True, null=True)
+    reserved_by = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.title
