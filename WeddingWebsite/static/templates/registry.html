@@ -15,16 +15,16 @@
                         <form action="{% url "reserve-item" %}" method="POST">
                             {%csrf_token%}
                             <input type="hidden" name="item_id" value={{ item.id }}>
-                        <button>RESERVED BY {{ item.reserved_by }} - click to unreserve</button>
+                        <button>RESERVED - Click to Unreserve</button>
                     </form>
                     {% else %}
-                        RESERVED BY {{ item.reserved_by }}
+                        Another user has reserved this item.
                     {% endif %}
                 {% else %}
                     <form action="{% url "reserve-item" %}" method="POST">
                         {%csrf_token%}
                         <input type="hidden" name="item_id" value={{ item.id }}>
-                    <button>RESERVE</button>
+                    <button>Reserve</button>
                 </form>
                 {% endif %}
             </li><br>
