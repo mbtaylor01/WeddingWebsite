@@ -203,8 +203,10 @@ class AccountInfoView(TemplateView):
 def error_404(request, *args, **kwargs):
    random_pet = choice(PET_IMAGES)
 
-   return render(request, "404.html", {
-       "random_image": f"pet_images/{random_pet}"
-   })
+   return render(request, 
+                "404.html", 
+                {"random_image": f"pet_images/{random_pet}"}, 
+                status=404
+            )
 
 
