@@ -136,7 +136,7 @@ class ThreadListView(ListView):
     
 
 class CreateThreadView(TemplateView):
-    template_name = "profile_pic.html"
+    template_name = "create_thread.html"
 
     def get_context_data(self, **kwargs):  # add a postform context to every page in the thread
         context =  super().get_context_data(**kwargs)
