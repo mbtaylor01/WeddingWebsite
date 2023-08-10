@@ -40,7 +40,7 @@ class RSVPPageView(CreateView):
     def form_valid(self, form):
         # save the object with form.save(), then add that object to the appropriate user (one-to-one)
         self.object = form.save()
-        user = CustomUser.objects.get(id=self.request.user.id)
+        user = self.request.user
         user.rsvp = self.object
         user.save()
         return super().form_valid(form)
@@ -109,7 +109,7 @@ class ThreadListView(ListView):
     def post(self, request, threadslug):
         new_post = Post()
         new_post.text = request.POST['text']
-        user = CustomUser.objects.get(username=request.user.username)
+        user = request.user
         new_post.creator = user
         new_post.thread = Thread.objects.get(slug=threadslug)
 
@@ -124,10 +124,9 @@ class ThreadListView(ListView):
         return context
 
     def get_queryset(self):  # only show the posts with thread_id of the current thread
-        the_thread = Thread.objects.get(slug=self.kwargs['threadslug'])
-
+        current_thread = Thread.objects.get(slug=self.kwargs['threadslug'])
         base_query = super().get_queryset()
-        data = base_query.filter(thread_id=the_thread.id)
+        data = base_query.filter(thread=current_thread)
         return data
     
 
@@ -146,7 +145,7 @@ class CreateThreadView(TemplateView):
         return super(CreateThreadView, self).get(*args, **kwargs)
     
     def post(self, request):
-        user = CustomUser.objects.get(username=request.user.username)
+        user = request.user
  
         new_thread = Thread()
         new_thread.title = request.POST['title']
@@ -156,7 +155,6 @@ class CreateThreadView(TemplateView):
 
         first_post = Post()
         first_post.text = request.POST['first_post']
-        user = CustomUser.objects.get(username=request.user.username)
         first_post.creator = user
         first_post.thread = new_thread
         first_post.save()
@@ -179,7 +177,7 @@ class ChangeProfilePic(TemplateView):
         return super(ChangeProfilePic, self).get(*args, **kwargs)
     
     def post(self, request):
-        user = CustomUser.objects.get(username=request.user.username)
+        user = request.user
         form = CustomUserForm(request.POST, request.FILES, instance=user)
  
         if form.is_valid():
