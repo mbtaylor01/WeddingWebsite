@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
-{% block page_title %}placeholder{% endblock %}
+{% block page_title %}
+    {{ posts.0.thread.title }}
+    {% if page_obj.paginator.num_pages > 1 %}
+        - pg {{ page_obj.number }}
+    {% endif %}
+{% endblock %}
 
 {% block css_file %}<link rel="stylesheet" href="{% static 'css/thread.css' %}">{% endblock %}
 
