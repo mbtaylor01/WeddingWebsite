@@ -135,11 +135,11 @@ class RegistryPageTests(TestCase):
         baker.make(RegistryEntry, title="registry_item_1", _create_files=True)
         response = self.cli.get(reverse("registry"))
         self.assertContains(response, "registry_item_1")
-        self.assertContains(response, "RESERVE")
-        self.assertNotContains(response, "unreserve")
+        self.assertContains(response, "Reserve")
+        self.assertNotContains(response, "RESERVED - Click to Unreserve")
         baker.make(RegistryEntry, title="registry_item_2", reserved_by=self.user, _create_files=True)
         response = self.cli.get(reverse("registry"))
-        self.assertContains(response, "unreserve")
+        self.assertContains(response, "RESERVED - Click to Unreserve")
 
 class ForumPageTests(TestCase):
     @classmethod
