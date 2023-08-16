@@ -54,6 +54,9 @@ class RSVPPageView(CreateView):
 class ThankYouView(TemplateView):
     template_name = "thankyou.html"
 
+class PasswordChangeSuccessView(TemplateView):
+    template_name = "password_change_success.html"
+
 
 class LogoutView(View):
     def get(self, request):

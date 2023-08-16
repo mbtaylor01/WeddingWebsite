@@ -1,5 +1,5 @@
 from .views import HomePageView, InfoPageView, RSVPPageView, ThankYouView, LogoutView, AccountInfoView, RegistryListView, RegistryPostView
-from .views import ForumListView, ThreadListView, CreateThreadView, ChangeProfilePic
+from .views import ForumListView, ThreadListView, CreateThreadView, ChangeProfilePic, PasswordChangeSuccessView
 from django.urls import path, reverse_lazy
 from django.contrib.auth import views as auth_views
 
@@ -17,7 +17,8 @@ urlpatterns = [
     path("account-info", AccountInfoView.as_view(), name="account-info"),
     path("profile-pic", ChangeProfilePic.as_view(), name="change-profile-pic"),
 
-    path("change-password", auth_views.PasswordChangeView.as_view(success_url=reverse_lazy("home"), template_name="change_password.html"), name="change-password"),
+    path("change-password", auth_views.PasswordChangeView.as_view(success_url=reverse_lazy("password-change-success"), template_name="change_password.html"), name="change-password"),
+    path("password-change-success", PasswordChangeSuccessView.as_view(), name="password-change-success"),
 
     path("reset-password", auth_views.PasswordResetView.as_view(success_url=reverse_lazy("reset-password-sent")), name="reset-password"),
     path("reset-password-sent", auth_views.PasswordResetDoneView.as_view(), name="reset-password-sent"),
