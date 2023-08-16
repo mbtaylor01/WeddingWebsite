@@ -173,6 +173,17 @@ class CreateThreadView(TemplateView):
 class ChangeProfilePic(TemplateView):
     template_name = "profile_pic.html"
 
+    @staticmethod
+    def delete_unused_profile_pics():
+        customuser_images = [Path(object.profile_pic.url).name for object in CustomUser.objects.all()]
+        profile_pics_path = os.path.join(settings.BASE_DIR, "uploads", "profile_pics")
+        for image in os.scandir(profile_pics_path):
+            try:
+                if image.name not in customuser_images and os.path.isfile(image.path):
+                    os.remove(image.path)
+            except FileNotFoundError:  # If two users change their pictures at the same time
+                pass
+        
     def get_context_data(self, **kwargs):  # add a postform context to every page in the thread
         context =  super().get_context_data(**kwargs)
         form = CustomUserForm()
@@ -191,11 +202,8 @@ class ChangeProfilePic(TemplateView):
         if form.is_valid():
             form.save()
         
-        customuser_images = [Path(object.profile_pic.url).name for object in CustomUser.objects.all()]
-        profile_pics_path = os.path.join(settings.BASE_DIR, "uploads", "profile_pics")
-        for image in os.scandir(profile_pics_path):
-            if image.name not in customuser_images and os.path.isfile(image.path):
-                os.remove(image.path)
+        self.delete_unused_profile_pics()
+
         return redirect(user)
     
 
