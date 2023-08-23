@@ -47,9 +47,21 @@ class Thread(models.Model):
         return self.title
     
 class Post(models.Model):
-    text = models.TextField()
     creator = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    edited = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.id)
+
+class PostVersion(models.Model):
+    text = models.TextField()
     creation_time = models.DateTimeField(default=datetime.now, blank=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
-
+    def __str__(self):
+        return self.text
+    
+    class Meta:
+        # set ordering so post.postversion_set.last.text in template always gets most recent post
+        ordering = ("creation_time",)

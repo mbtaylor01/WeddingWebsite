@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_title %}Edit Post{% endblock %}
+
+{% block css_file %}<link rel="stylesheet" href="{% static 'css/edit_post.css' %}">{% endblock %}
+
+{% block content %}
+<div class="movecenter">    
+    <form action="{% url "edit-post" threadslug post_id %}" method="POST">
+        {%csrf_token%}
+        <textarea name="post_text">{{ post_text }}</textarea>
+        <button>Edit Post</button>
+    </form> 
+    <a href="{% url "thread" threadslug %}">Cancel</a>
+</div>
+{% endblock %}

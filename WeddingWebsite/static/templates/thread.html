@@ -12,7 +12,14 @@
 {% block content %}
 
 {% for post in posts %}
-    <img src="{{ post.creator.profile_pic.url }}"/>{{ post.text }}<br><br>
+    <img src="{{ post.creator.profile_pic.url }}"/>{{ post.postversion_set.last.text }}
+    {% if post.edited %}
+        (edited)
+    {% endif %}
+    {% if post.creator == request.user %}
+        <a href={% url "edit-post" post.thread|slugify post.id %}>Edit Post</a>
+    {% endif %}
+    <br><br>
 {% endfor %}
 
 {% for user in users %}

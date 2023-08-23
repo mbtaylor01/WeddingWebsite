@@ -1,5 +1,5 @@
 from django import forms
-from .models import Thread, Post, CustomUser, RSVP
+from .models import Thread, Post, CustomUser, RSVP, PostVersion
 from django.forms import Textarea
 
 class ThreadForm(forms.ModelForm):
@@ -20,14 +20,14 @@ class ThreadForm(forms.ModelForm):
             }
         }
 
-class PostForm(forms.ModelForm):
+class PostVersionForm(forms.ModelForm):
     class Meta:
-        model = Post
+        model = PostVersion
         fields = ['text']
 
-        labels = {
-            "text": "Your Name:",
-        }
+        # labels = {
+        #     "text": "Post Text:",
+        # }
 
         error_messages = {
             "text": {

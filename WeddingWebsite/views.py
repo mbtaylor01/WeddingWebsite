@@ -2,10 +2,10 @@ import os
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
-from .models import RSVP, RegistryEntry, Thread, Post, CustomUser
+from .models import RSVP, RegistryEntry, Thread, Post, CustomUser, PostVersion
 from django.contrib.auth import logout
 from django.views.generic import ListView, CreateView
-from .forms import ThreadForm, PostForm, CustomUserForm, RSVPForm
+from .forms import ThreadForm, CustomUserForm, RSVPForm, PostVersionForm
 from django.utils.text import slugify
 from django.shortcuts import redirect
 from pathlib import Path
@@ -106,8 +106,8 @@ class ThreadListView(ListView):
     template_name = "thread.html"
     model = Post
     context_object_name = "posts"
-    paginate_by = 5
-    ordering = ['creation_time']
+    paginate_by = 20
+    ordering = ['id']  # always order by when posts were created
 
     def get(self, *args, **kwargs):
         if not self.request.user.is_authenticated:
@@ -116,18 +116,23 @@ class ThreadListView(ListView):
 
     def post(self, request, threadslug):
         new_post = Post()
-        new_post.text = request.POST['text']
         user = request.user
         new_post.creator = user
         new_post.thread = Thread.objects.get(slug=threadslug)
 
         new_post.save()
 
+        new_postversion = PostVersion()
+        new_postversion.text = request.POST['text']
+        new_postversion.post = new_post
+
+        new_postversion.save()
+
         return redirect(new_post.thread)
 
     def get_context_data(self, **kwargs):  # add a postform context to every page in the thread
         context =  super().get_context_data(**kwargs)
-        form = PostForm()
+        form = PostVersionForm()
         context['form'] = form
         return context
 
@@ -141,7 +146,7 @@ class ThreadListView(ListView):
 class CreateThreadView(TemplateView):
     template_name = "create_thread.html"
 
-    def get_context_data(self, **kwargs):  # add a postform context to every page in the thread
+    def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         form = ThreadForm()
         context['form'] = form
@@ -162,12 +167,61 @@ class CreateThreadView(TemplateView):
         new_thread.save()
 
         first_post = Post()
-        first_post.text = request.POST['first_post']
         first_post.creator = user
         first_post.thread = new_thread
         first_post.save()
 
+        new_postversion = PostVersion()
+        new_postversion.text = request.POST['first_post']
+        new_postversion.post = first_post
+
+        new_postversion.save()
+
         return redirect("forum")
+    
+class EditPostView(TemplateView):
+    template_name = "edit_post.html"
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        context['threadslug'] = self.kwargs['threadslug']
+        context['post_id'] = self.kwargs['id']
+        context['post_text'] = Post.objects.get(id=self.kwargs['id']).postversion_set.last().text
+        return context
+
+    def get(self, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('home')
+        else:
+            post = Post.objects.get(id=self.kwargs['id'])
+            if post.creator != self.request.user: # users can only get to their own posts
+                return redirect('home')
+
+        return super(EditPostView, self).get(*args, **kwargs)
+
+    def post(self, request, threadslug, id):
+        if self.request.user.is_authenticated:
+            post = Post.objects.get(id=id)
+    
+            # users can only edit their own posts
+            if post.creator == request.user:
+                current_text = post.postversion_set.last().text
+                new_post_text = request.POST['post_text']
+                
+                if current_text != new_post_text: 
+                    new_postversion = PostVersion()
+                    new_postversion.text = new_post_text
+                    new_postversion.post = post
+
+                    new_postversion.save()
+
+                    post.edited = True
+                    post.save()
+                
+                return redirect(post.thread)
+       
+        return redirect('home')
+        
     
 
 class ChangeProfilePic(TemplateView):
