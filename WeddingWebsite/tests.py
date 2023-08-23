@@ -3,8 +3,6 @@ from django.urls import reverse
 from .models import CustomUser, Thread, Post, PostVersion, RSVP, RegistryEntry
 from model_bakery import baker
 from datetime import datetime, timedelta
-import warnings
-warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 # Create your tests here.
 class HomePageTests(SimpleTestCase):

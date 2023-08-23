@@ -1,7 +1,7 @@
-from datetime import datetime
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
+from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 
 class RSVP(models.Model):
@@ -35,7 +35,7 @@ class RegistryEntry(models.Model):
 class Thread(models.Model):
     title = models.CharField(max_length=500)
     creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    creation_time = models.DateTimeField(default=datetime.now, blank=True)
+    creation_time = models.DateTimeField(default=timezone.now, blank=True)
     slug = models.SlugField(default="")
 
     def get_absolute_url(self):
@@ -56,7 +56,7 @@ class Post(models.Model):
 
 class PostVersion(models.Model):
     text = models.TextField()
-    creation_time = models.DateTimeField(default=datetime.now, blank=True)
+    creation_time = models.DateTimeField(default=timezone.now, blank=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
     def __str__(self):
