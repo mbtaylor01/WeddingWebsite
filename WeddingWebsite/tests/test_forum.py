@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from WeddingWebsite.models import CustomUser, Thread, Post, PostVersion
 from model_bakery import baker
-from datetime import datetime, timedelta
+from django.utils import timezone
 
 class ForumPageTests(TestCase):
     @classmethod
@@ -10,9 +10,9 @@ class ForumPageTests(TestCase):
         cls.cli = Client()
         cls.user = CustomUser.objects.create_user(username='testuser', password='12345')
         cls.cli.login(username='testuser', password='12345')
-        cls.thread = baker.make(Thread, title="Test Thread", slug="test-thread", creation_time=datetime.now().astimezone)
+        cls.thread = baker.make(Thread, title="Test Thread", slug="test-thread")
         cls.post = baker.make(Post, id=999, thread=cls.thread, creator=cls.user)
-        cls.postversion = baker.make(PostVersion, text="Test"*100, creation_time=(datetime.now() - timedelta(days=7)).astimezone, post=cls.post)
+        cls.postversion = baker.make(PostVersion, text="Test"*100, creation_time=timezone.now, post=cls.post)
 
     def test_page_loads_if_logged_in(self):
         response = self.cli.get("/forum")
@@ -37,33 +37,6 @@ class ForumPageTests(TestCase):
         response = self.cli.get(reverse("edit-post", args=["test-thread", "999"]))
         self.assertEqual(response.status_code, 302)
 
-    def test_user_editing_post_when_logged_in(self):
-        response = self.cli.post(
-            reverse("edit-post", args=["test-thread", "999"]), 
-            data={"post_text": "text text text",},
-            follow=True,
-        )
-        self.assertRedirects(
-            response, 
-            expected_url=reverse("thread", args=["test-thread",]),
-            status_code=302,
-            target_status_code=200,
-        )
-        self.assertContains(response, "text text text")
-
-    def test_user_editing_post_when_not_logged_in(self):
-        self.cli.logout()
-        response = self.cli.post(
-            reverse("edit-post", args=["test-thread", "999"]), 
-            data={'post_text': "text text text",},
-        )
-        self.assertRedirects(
-            response, 
-            expected_url=reverse("home"),
-            status_code=302,
-            target_status_code=200,
-        )
-        
     def test_template_used_if_logged_in(self):
         response = self.cli.get(reverse("forum"))
         self.assertTemplateUsed(response, "forum.html")
@@ -88,15 +61,52 @@ class ForumPageTests(TestCase):
         response = self.cli.get(reverse("edit-post", args=["test-thread", "999"]))
         self.assertContains(response, "Edit Post")
 
+class ForumPostTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.cli = Client()
+        cls.user = CustomUser.objects.create_user(username='testuser', password='12345')
+        cls.cli.login(username='testuser', password='12345')
+        cls.thread = baker.make(Thread, title="Test Thread", slug="test-thread")
+        cls.post = baker.make(Post, id=999, thread=cls.thread, creator=cls.user)
+        cls.postversion = baker.make(PostVersion, text="Test"*100, creation_time=timezone.now, post=cls.post)
+        
+    def test_user_editing_post_when_logged_in(self):
+        response = self.cli.post(
+            reverse("edit-post", args=["test-thread", "999"]), 
+            data={"post_text": "text text text",},
+            follow=True,
+        )
+        self.assertRedirects(
+            response, 
+            expected_url=reverse("thread", args=["test-thread",]),
+            status_code=302,
+            target_status_code=200,
+        )
+        self.assertContains(response, "text text text")
+
+    def test_user_editing_post_when_not_logged_in(self):
+        self.cli.logout()
+        response = self.cli.post(
+            reverse("edit-post", args=["test-thread", "999"]), 
+            data={'post_text': "text text text",},
+        )
+        self.assertRedirects(
+            response, 
+            expected_url="/accounts/login/?next=/forum/test-thread/999/edit",
+            status_code=302,
+            target_status_code=200,
+        )
+
 class ForumModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.thread = baker.make(Thread, title="Test Thread", slug="test-thread", creation_time=datetime.now().astimezone)
+        cls.thread = baker.make(Thread, title="Test Thread", slug="test-thread")
         cls.post = baker.make(Post, id=999, thread=cls.thread)
-        cls.postversion = baker.make(PostVersion, text="Test"*100, creation_time=datetime.now().astimezone, post=cls.post)
+        cls.postversion = baker.make(PostVersion, text="Test"*100, post=cls.post)
 
     def test_number_thread_instances(self):
-        threads = baker.make(Thread, creation_time=datetime.now().astimezone, _quantity=20)
+        threads = baker.make(Thread, _quantity=20)
         assert len(threads) == 20
 
     def test_number_post_instances(self):
@@ -104,7 +114,7 @@ class ForumModelTests(TestCase):
         assert len(posts) == 100
 
     def test_number_postversion_instances(self):
-        postversions = baker.make(PostVersion, creation_time=datetime.now().astimezone, post=self.post, _quantity=15)
+        postversions = baker.make(PostVersion, post=self.post, _quantity=15)
         assert len(postversions) == 15
 
     def test_thread_get_absolute_url(self):
