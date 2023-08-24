@@ -18,6 +18,8 @@ urlpatterns = [
     path("account-info", AccountInfoView.as_view(), name="account-info"),
     path("profile-pic", ChangeProfilePic.as_view(), name="change-profile-pic"),
 
+    path("login", auth_views.LoginView.as_view(), name="login"),
+
     path("change-password", auth_views.PasswordChangeView.as_view(success_url=reverse_lazy("password-change-success"), template_name="change_password.html"), name="change-password"),
     path("password-change-success", PasswordChangeSuccessView.as_view(), name="password-change-success"),
 

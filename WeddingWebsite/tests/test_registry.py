@@ -89,7 +89,7 @@ class RegistryPostTests(TestCase):
         )
         self.assertRedirects(
             response, 
-            expected_url="/accounts/login/?next=/reserve-item",
+            expected_url="/login?next=/reserve-item",
             status_code=302,
             target_status_code=200,
         )

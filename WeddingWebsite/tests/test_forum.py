@@ -93,7 +93,7 @@ class ForumPostTests(TestCase):
         )
         self.assertRedirects(
             response, 
-            expected_url="/accounts/login/?next=/forum/test-thread/999/edit",
+            expected_url="/login?next=/forum/test-thread/999/edit",
             status_code=302,
             target_status_code=200,
         )

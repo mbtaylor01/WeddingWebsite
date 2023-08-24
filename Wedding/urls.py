@@ -22,9 +22,7 @@ from WeddingWebsite.views import error_404
 
 handler404 = error_404
 
-
 urlpatterns = [
     path(settings.SECRETS["admin_url"], admin.site.urls),
-    path("accounts/", include("django.contrib.auth.urls")),
     path("", include("WeddingWebsite.urls")),
 ]

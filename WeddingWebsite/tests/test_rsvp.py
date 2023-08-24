@@ -74,7 +74,7 @@ class RSVPPostTests(TestCase):
         )
         self.assertRedirects(
             response, 
-            expected_url="/accounts/login/?next=/rsvp",
+            expected_url="/login?next=/rsvp",
             status_code=302,
             target_status_code=200,
         )

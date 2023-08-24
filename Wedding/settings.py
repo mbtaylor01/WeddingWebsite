@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from django.urls import reverse_lazy
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -117,6 +118,7 @@ STATIC_URL = 'prodstatic/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = reverse_lazy("login")
 LOGIN_REDIRECT_URL = "home"
 
 MEDIA_ROOT = BASE_DIR / "uploads"
