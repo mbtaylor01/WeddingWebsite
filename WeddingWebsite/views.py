@@ -64,6 +64,7 @@ class RegistryListView(LoginRequiredMixin, ListView):
     template_name = "registry.html"
     model = RegistryEntry
     context_object_name = "registry_items"
+    ordering = "title"
 
 
 class RegistryPostView(LoginRequiredMixin, View):
