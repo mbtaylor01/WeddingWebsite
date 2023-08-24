@@ -13,6 +13,7 @@ from django.conf import settings
 from django.views.generic.base import TemplateView
 from django.views.generic import View
 from random import choice
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 PET_DIR = os.path.join(settings.BASE_DIR, "WeddingWebsite", "static", "pet_images")
 PET_IMAGES = [str(image.name) for image in os.scandir(PET_DIR)]
@@ -21,16 +22,11 @@ class HomePageView(TemplateView):
     template_name = "home.html"
 
 
-class InfoPageView(TemplateView):
+class InfoPageView(LoginRequiredMixin, TemplateView):
     template_name = "info.html"
 
-    def get(self, *args, **kwargs):
-        if not self.request.user.is_authenticated:
-            return redirect('home')
-        return super(InfoPageView, self).get(*args, **kwargs)
 
-
-class RSVPPageView(CreateView):
+class RSVPPageView(LoginRequiredMixin, CreateView):
     model = RSVP
     form_class = RSVPForm
     template_name = "rsvp.html"
@@ -38,7 +34,7 @@ class RSVPPageView(CreateView):
 
     def get(self, *args, **kwargs):
         # if the user has already rsvp'd then don't want them to be able to rsvp again
-        if not self.request.user.is_authenticated or self.request.user.rsvp:
+        if self.request.user.rsvp:
             return redirect('home')
         return super(RSVPPageView, self).get(*args, **kwargs)
     
@@ -64,18 +60,13 @@ class LogoutView(View):
         return HttpResponseRedirect(reverse("home"))
     
 
-class RegistryListView(ListView):
+class RegistryListView(LoginRequiredMixin, ListView):
     template_name = "registry.html"
     model = RegistryEntry
     context_object_name = "registry_items"
 
-    def get(self, *args, **kwargs):
-        if not self.request.user.is_authenticated:
-            return redirect('home')
-        return super(RegistryListView, self).get(*args, **kwargs)
 
-
-class RegistryPostView(View):
+class RegistryPostView(LoginRequiredMixin, View):
     def post(self, request):
         reg_entry = RegistryEntry.objects.get(id=request.POST['item_id'])
 
@@ -91,28 +82,18 @@ class RegistryPostView(View):
         return HttpResponseRedirect(reverse("registry"))
 
 
-class ForumListView(ListView):
+class ForumListView(LoginRequiredMixin, ListView):
     template_name = "forum.html"
     model = Thread
     context_object_name = "threads"
 
-    def get(self, *args, **kwargs):
-        if not self.request.user.is_authenticated:
-            return redirect('home')
-        return super(ForumListView, self).get(*args, **kwargs)
 
-
-class ThreadListView(ListView):
+class ThreadListView(LoginRequiredMixin, ListView):
     template_name = "thread.html"
     model = Post
     context_object_name = "posts"
     paginate_by = 20
     ordering = ['id']  # always order by when posts were created
-
-    def get(self, *args, **kwargs):
-        if not self.request.user.is_authenticated:
-            return redirect('home')
-        return super(ThreadListView, self).get(*args, **kwargs)
 
     def post(self, request, threadslug):
         new_post = Post()
@@ -143,7 +124,7 @@ class ThreadListView(ListView):
         return data
     
 
-class CreateThreadView(TemplateView):
+class CreateThreadView(LoginRequiredMixin, TemplateView):
     template_name = "create_thread.html"
 
     def get_context_data(self, **kwargs):
@@ -151,11 +132,6 @@ class CreateThreadView(TemplateView):
         form = ThreadForm()
         context['form'] = form
         return context
-    
-    def get(self, *args, **kwargs):
-        if not self.request.user.is_authenticated:
-            return redirect('home')
-        return super(CreateThreadView, self).get(*args, **kwargs)
     
     def post(self, request):
         user = request.user
@@ -179,7 +155,7 @@ class CreateThreadView(TemplateView):
 
         return redirect("forum")
     
-class EditPostView(TemplateView):
+class EditPostView(LoginRequiredMixin, TemplateView):
     template_name = "edit_post.html"
 
     def get_context_data(self, **kwargs):
@@ -190,41 +166,37 @@ class EditPostView(TemplateView):
         return context
 
     def get(self, *args, **kwargs):
-        if not self.request.user.is_authenticated:
+        post = Post.objects.get(id=self.kwargs['id'])
+        if post.creator != self.request.user: # users can only get to their own posts
             return redirect('home')
-        else:
-            post = Post.objects.get(id=self.kwargs['id'])
-            if post.creator != self.request.user: # users can only get to their own posts
-                return redirect('home')
 
         return super(EditPostView, self).get(*args, **kwargs)
 
     def post(self, request, threadslug, id):
-        if self.request.user.is_authenticated:
-            post = Post.objects.get(id=id)
-    
-            # users can only edit their own posts
-            if post.creator == request.user:
-                current_text = post.postversion_set.last().text
-                new_post_text = request.POST['post_text']
-                
-                if current_text != new_post_text: 
-                    new_postversion = PostVersion()
-                    new_postversion.text = new_post_text
-                    new_postversion.post = post
+        post = Post.objects.get(id=id)
 
-                    new_postversion.save()
+        # users can only edit their own posts
+        if post.creator == request.user:
+            current_text = post.postversion_set.last().text
+            new_post_text = request.POST['post_text']
 
-                    post.edited = True
-                    post.save()
-                
-                return redirect(post.thread)
+            if current_text != new_post_text: 
+                new_postversion = PostVersion()
+                new_postversion.text = new_post_text
+                new_postversion.post = post
+
+                new_postversion.save()
+
+                post.edited = True
+                post.save()
+            
+            return redirect(post.thread)
        
         return redirect('home')
         
     
 
-class ChangeProfilePic(TemplateView):
+class ChangeProfilePic(LoginRequiredMixin, TemplateView):
     template_name = "profile_pic.html"
 
     @staticmethod
@@ -244,11 +216,6 @@ class ChangeProfilePic(TemplateView):
         context['form'] = form
         return context
     
-    def get(self, *args, **kwargs):
-        if not self.request.user.is_authenticated:
-            return redirect('home')
-        return super(ChangeProfilePic, self).get(*args, **kwargs)
-    
     def post(self, request):
         user = request.user
         form = CustomUserForm(request.POST, request.FILES, instance=user)
@@ -261,7 +228,7 @@ class ChangeProfilePic(TemplateView):
         return redirect(user)
     
 
-class AccountInfoView(TemplateView):
+class AccountInfoView(LoginRequiredMixin, TemplateView):
     template_name = "account_info.html"
 
 
