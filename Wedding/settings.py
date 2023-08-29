@@ -1,25 +1,23 @@
-import json
+import sys
 from pathlib import Path
 from django.urls import reverse_lazy
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-with open(f"{BASE_DIR}/secrets.json") as file:
-    SECRETS = json.load(file)
-
+sys.path.insert(1, BASE_DIR)  # look in the right place for secret_info.py
+import secret_info
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SECRETS["secret_key"]
+SECRET_KEY = secret_info.secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = eval(SECRETS["debug"])
+DEBUG = secret_info.debug
 
-ALLOWED_HOSTS = SECRETS["allowed_hosts"]
+ALLOWED_HOSTS = secret_info.allowed_hosts
 
 # Application definition
 
@@ -72,9 +70,9 @@ WSGI_APPLICATION = 'Wedding.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {key:eval(value) for (key,value) in SECRETS["databases_default"].items()}
-}
+DATABASES = secret_info.databases
+if "BASE_DIR" in DATABASES["default"]["NAME"]:
+    DATABASES["default"]["NAME"] = eval(DATABASES["default"]["NAME"])
 
 
 # Password validation
@@ -132,8 +130,8 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / "prodstatic"
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = SECRETS["email_host"]
-EMAIL_PORT = SECRETS["email_port"]
+EMAIL_HOST = secret_info.email_host
+EMAIL_PORT = secret_info.email_port
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = SECRETS["email_host_user"]
-EMAIL_HOST_PASSWORD = SECRETS["email_host_password"]
+EMAIL_HOST_USER = secret_info.email_host_user
+EMAIL_HOST_PASSWORD = secret_info.email_host_password
