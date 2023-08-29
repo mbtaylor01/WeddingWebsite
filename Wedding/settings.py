@@ -135,3 +135,4 @@ EMAIL_PORT = secret_info.email_port
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = secret_info.email_host_user
 EMAIL_HOST_PASSWORD = secret_info.email_host_password
+ADMINS = secret_info.admins
