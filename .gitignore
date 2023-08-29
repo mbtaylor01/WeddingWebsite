@@ -10,10 +10,10 @@ secrets.json
 old/
 DEPLOY/
 prodstatic/
-pull_server_database.sh
-upload_code_no_database.sh
-upload_database.sh
+scripts/
 WeddingWebsite/static/pet_images/
+server_database_dumps/
+server_misc_backups/
 
 # Backup files # 
 *.bak 
