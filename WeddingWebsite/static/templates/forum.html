@@ -1,18 +1,83 @@
 {% extends "base.html" %}
 {% load static %}
-    {% block page_title %}Forum{% endblock %}
 
-    {% block css_file %}<link rel="stylesheet" href="{% static 'css/forum.css' %}">{% endblock %}
+{% block page_title %}Forum{% endblock %}
 
-    {% block content %}
-    <div class="movecenter">
-        <a href="{% url "create-thread" %}">Create New Topic</a><br><br>
-    
+{% block css_file %}<link rel="stylesheet" href="{% static 'css/forum.css' %}">{% endblock %}
+
+{% block content %}
+<div class="background">
+    <main>
+        <div class="thread_container">
+            <a href="{% url "create-thread" %}"><span></span></a>
+            <h1>Create New Topic</h1>
+        </div>
         {% for thread in threads %}
-        <a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a>
-            <br><br>
+            <div class="thread_container">
+                <a href="{{ thread.get_absolute_url }}"><span></span></a>
+
+                <div class="thread_title">
+                    <h2>{{ thread.title }}</h2>
+                </div>
+                <hr>
+                <div class="thread_info">
+                    <div class="thread_creation_info">
+                        <!-- <p>Creator:</p> -->
+                        <p>Created: {{ thread.creation_time }}</p>
+                    </div>
+                    <div class="thread_creator">
+                        <div class="profile_pic_container">
+                            <img src="{{ thread.creator.profile_pic.url }}" class="profile_image"/>
+                        </div>
+                        <p>{{ thread.creator }}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="thread_recent_post_info">
+                    <div class="recent_post_text">
+                        <p>{{ thread.post_set.count }} {% if thread.post_set.count == 1 %}post{% else %}posts{% endif %}
+                             - last post: <span class="preview_text">{{ thread.post_set.last.postversion_set.last.text|truncatewords:7 }}</span></p>
+                    </div>
+                    <div class="recent_post_user">
+                        <div class="profile_pic_container">
+                            <img src="{{ thread.post_set.last.creator.profile_pic.url }}" class="profile_image"/>
+                        </div>
+                        <p>{{ thread.post_set.last.creator }}</p>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
- 
-        
-    </div>
-    {% endblock %}
+        <div class="pagination">
+            <div class="current_page">
+                page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </div>
+            {% if page_obj.paginator.num_pages > 1 %}
+                <div class="next_previous">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">prev</a>
+                    {% endif %}
+            
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+<!-- class Thread(models.Model):
+    title = models.CharField(max_length=500)
+    creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    creation_time = models.DateTimeField(default=timezone.now, blank=True) -->
+
+    <!-- class Post(models.Model):
+    creator = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    edited = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.id) -->

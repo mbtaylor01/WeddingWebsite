@@ -11,44 +11,57 @@
 
 {% block content %}
 
-{% for post in posts %}
-    <img src="{{ post.creator.profile_pic.url }}"/>{{ post.postversion_set.last.text }}
-    {% if post.edited %}
-        (edited)
-    {% endif %}
-    {% if post.creator == request.user %}
-        <a href={% url "edit-post" post.thread|slugify post.id %}>Edit Post</a>
-    {% endif %}
-    <br><br>
-{% endfor %}
+<div class="background">
+    <main>
+        <a href="{% url "forum"%}">&lt;&lt;&lt; Back to forum</a>
+        {% for post in posts %}
+            <div class="post_container">
+                <div class="post_creator">
+                    <div class="profile_pic_container">
+                        <img src="{{ post.creator.profile_pic.url }}" class="profile_image"/>
+                    </div>
+                    <p>{{ post.creator }}</p>
+                    <p> - {{ post.postversion_set.last.creation_time }}</p>
+                </div>
+                <div class="post_text">
+                    {{ post.postversion_set.last.text }}
+                    {% if post.edited %}
+                        <span class="edited">(edited)</span>
+                    {% endif %}
+                    {% if post.creator == request.user %}
+                        <div class="edit_post">
+                            <a href={% url "edit-post" post.thread|slugify post.id %}>Edit Post</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}  
+    
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.text }}
+            <button>Submit New Post</button>
+        </form>
 
-{% for user in users %}
-    {{ user.username }}<br><br>
-{% endfor %}
-
-<div class='movemiddle'>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form }}
-        <button>Submit New Post</button>
-    </form>
-
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        <div class="pagination">
+            <div class="current_page">
+                page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </div>
+            {% if page_obj.paginator.num_pages > 1 %}
+                <div class="next_previous">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">prev</a>
+                    {% endif %}
+            
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last</a>
+                    {% endif %}
+                </div>
             {% endif %}
-
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
-
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
+        </div>
+    </main>
 </div>
+
 {% endblock %}

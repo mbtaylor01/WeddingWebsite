@@ -1,4 +1,191 @@
-.movemiddle {
+.background {
+    width: 100%;
+    background-image: url("https://images.unsplash.com/photo-1533119408463-b0f487583ff6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80");
+    background-size: cover;
+    position: relative;
+    z-index: -1;
+    min-height: calc(100vh - var(--heading_height));
+}
+
+h1 {
+    font-size: 3rem;
+    font-family: "Poppins", "Libre Baskerville", serif;
+    font-family: "Libre Baskerville", "Poppins", "Times New Roman", serif;
+    font-style: italic;
+}
+
+main {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: auto;
+    margin-left: auto;
+    gap: 10px;
+    max-width: 1024px;
+    padding: 10px;
+}
+
+main > a {
+    align-self: flex-start;
+    font-size: 2rem;
+    padding: 10px 20px;
+    background-color: var(--faded_background_color);
+    border-radius: 10px;
+    box-shadow: 
+        rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, 
+        rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    font-family: "Poppins", "Libre Baskerville", serif;
+}
+
+main > a:hover {
+    transform: scale(1.02);
+    transition: var(--quick_transition);
+}
+
+main .post_container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 10px;
+    background-color: var(--faded_background_color);
+    border-radius: 10px;
+    box-shadow: 
+        rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, 
+        rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    width: 100%;
+    height: 100%;
+}
+
+.post_container .post_creator {
+    display: flex;
+    align-items: center;
+    margin: 0 0 10px 0;
+    padding: 5px;
+    background-color: lightgrey;
+    border-radius: 10px;
+    min-width: 100%;
+    font-family: "Poppins", "Libre Baskerville", serif;
+}
+
+.post_container .post_text {
+    font-size: 1.3rem;
+    font-family: "Poppins", "Libre Baskerville", serif;
+    font-family: "Libre Baskerville", "Poppins", "Times New Roman", serif;
+    margin: 5px 0 5px 0;
+    border-left: 1px solid lightgrey;
+    padding-left: 10px;
+}
+
+.post_container .post_text .edited {
+    font-weight: bold;
+}
+
+.post_container .post_text a {
+    font-family: "Poppins", "Libre Baskerville", serif;
+    margin-top: 10px;
+}
+
+.post_container .post_text a:hover {
+    text-decoration: underline;
+}
+
+.post_container .profile_pic_container {
+    width: 40px;
+    height: 40px;
+}
+
+.post_container p {
+    margin-left: 5px;
+}
+
+.post_container .profile_pic_container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--faded_background_color);
+}
+
+.thread_title h2 {
+    font-size: 3rem;
+    font-family: "Poppins", "Libre Baskerville", serif;
+    font-family: "Libre Baskerville", "Poppins", "Times New Roman", serif;
+    text-align: center;
+}
+
+.pagination {
+    font-size: 1.3rem;
+    font-family: "Poppins", "Libre Baskerville", serif;
+    text-align: center;
+}
+
+.pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5vh;
+    padding: 10px;
+    background-color: var(--faded_background_color);
+    border-radius: 10px;
+    box-shadow: 
+        rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, 
+        rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+.pagination .next_previous {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.pagination .next_previous a:hover {
+    text-decoration: underline;
+}
+
+.pagination a {
+    margin: 0 5px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
     width: 50%;
-    margin: auto;
+}
+
+form button {
+    font-family: "Poppins", "Libre Baskerville", serif;
+    padding: 10px 20px;
+}
+
+@media only screen and (max-width: 480px) {
+    .pagination .next_previous a {
+        text-decoration: underline;
+    }
+
+    form {
+        width: 100%; 
+    }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 699px) {
+    form {
+        width: 80%;
+    }
+}
+
+@media only screen and (min-width: 700px) and (max-width: 1024px) {
+    form {
+        width: 80%;
+    }
+} 
+
+@media only screen and (min-width: 1025px) {
+    form {
+        width: 50%; 
+    }
 }

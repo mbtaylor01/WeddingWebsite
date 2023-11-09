@@ -1,19 +1,31 @@
 {% extends "base.html" %}
 {% load static %}
-    {% block page_title %}Create Thread{% endblock %}
 
-    {% block css_file %}<link rel="stylesheet" href="{% static 'css/create_thread.css' %}">{% endblock %}
+{% block page_title %}Create Thread{% endblock %}
 
-    {% block content %}
-    <div class="movecenter">
-        <form method="POST" action="{% url "create-thread" %}">
-            {% csrf_token %}
-            {{ form.title }}<br><br>
-            {{ form.first_post }}
-            <button>Create</button>
-        </form>     
-        <a href="{% url "forum" %}">Cancel</a>
-    </div>
+{% block css_file %}<link rel="stylesheet" href="{% static 'css/create_thread.css' %}">{% endblock %}
 
-    
-    {% endblock %}
+{% block content %}
+
+<div class="background">
+    <main>
+        <h1>New Thread</h1>
+        <div class="form_container">
+            <form method="POST" action="{% url "create-thread" %}">
+                {% csrf_token %}
+                <div class="new_title">
+                    <label for="id_title">Title</label>
+                    {{ form.title }}
+                </div>
+                <div class="new_post">
+                    <label for="id_first_post">First Post</label>
+                    {{ form.first_post }}
+                </div>
+                <button>Create</button>
+            </form>     
+            <a href="{% url "forum" %}">Cancel</a>
+        </div>
+    </main>
+</div>
+
+{% endblock %}

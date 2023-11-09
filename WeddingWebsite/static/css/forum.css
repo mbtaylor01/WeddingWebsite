@@ -1,4 +1,160 @@
-.movecenter{
-    width: 50%;
-    margin: auto;
+.background {
+    width: 100%;
+    background-image: url("https://images.unsplash.com/photo-1533119408463-b0f487583ff6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80");
+    background-size: cover;
+    position: relative;
+    z-index: -1;
+    min-height: calc(100vh - var(--heading_height));
+}
+
+main {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: auto;
+    margin-left: auto;
+    gap: 2vh;
+    max-width: 1024px;
+    padding: 10px;
+}
+
+main .thread_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5vh;
+    padding: 10px;
+    background-color: var(--faded_background_color);
+    border-radius: 10px;
+    box-shadow: 
+        rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, 
+        rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    width: 100%;
+}
+
+main .thread_container {
+    position: relative;
+}
+
+main a span {
+    position:absolute; 
+    width:100%;
+    height:100%;
+    top:0;
+    left: 0;
+    z-index: 1;
+}
+
+main .thread_container:hover {
+    transform: scale(1.02);
+    transition: var(--quick_transition);
+}
+
+h1 {
+    font-size: 3rem;
+    font-family: "Poppins", "Libre Baskerville", serif;
+    font-family: "Libre Baskerville", "Poppins", "Times New Roman", serif;
+    font-style: italic;
+}
+
+hr {
+    width: 80%;
+    color: var(--faded_background_color);
+}
+
+.preview_text {
+    font-style: italic;
+    font-family: "Libre Baskerville", "Poppins", "Times New Roman", serif;
+}
+
+.thread_container .thread_recent_post_info,
+.thread_container .thread_info {
+    display: flex;
+    align-items: center;
+}
+
+.thread_recent_post_info .recent_post_user, 
+.thread_info .thread_creator {
+    display: inline-flex;
+    align-items: center;
+}
+
+.thread_container .profile_pic_container {
+    width: 40px;
+    height: 40px;
+    margin-left: 5px;
+}
+
+.thread_container .profile_pic_container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--faded_background_color);
+}
+
+.thread_title h2 {
+    font-size: 2.5rem;
+    font-family: "Poppins", "Libre Baskerville", serif;
+    font-family: "Libre Baskerville", "Poppins", "Times New Roman", serif;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.pagination,
+.thread_container .thread_info,
+.thread_container .thread_recent_post_info {
+    font-size: 1.3rem;
+    font-family: "Poppins", "Libre Baskerville", serif;
+    text-align: center;
+}
+
+.pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5vh;
+    padding: 10px;
+    background-color: var(--faded_background_color);
+    border-radius: 10px;
+    box-shadow: 
+        rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, 
+        rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+.pagination .next_previous {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.pagination .next_previous a:hover {
+    text-decoration: underline;
+}
+
+.pagination a {
+    margin: 0 5px;
+}
+
+@media only screen and (max-width: 480px) {
+    .pagination .next_previous a {
+        text-decoration: underline;
+    }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 699px) {
+    
+}
+
+@media only screen and (min-width: 700px) and (max-width: 1024px) {
+    
+} 
+
+@media only screen and (min-width: 1025px) {
+    
 }
