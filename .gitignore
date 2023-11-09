@@ -4,14 +4,14 @@
 *.pyc
 __pycache__
 db.sqlite3
-uploads/profile_pics/
-uploads/images/mock*
+uploads/
 secret_info.py
 old/
 DEPLOY/
 prodstatic/
 scripts/
 WeddingWebsite/static/pet_images/
+WeddingWebsite/static/page_images/
 server_database_dumps/
 server_misc_backups/
 
