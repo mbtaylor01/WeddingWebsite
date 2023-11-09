@@ -7,50 +7,79 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<title>{% block page_title %}{% endblock %}</title>
 		<link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Parisienne&family=Poppins:wght@300;400&display=swap" rel="stylesheet">                       
+        <script src="{% static 'js/base.js' %}" defer></script>
         {% block css_file %}{% endblock %}
 	</head>
 	<body>
-        <div class='navbar'>
-            <div class='navlink'>
-                <a href={% url "home" %}>Home</a>
+        <header>
+            <div class="title">
+                <a href={% url "home" %}>Carder-Taylor<br>Wedding</a>
             </div>
-            <div class='navlink'>
-                {% if user.is_authenticated %}
-                    <a href={% url "info" %} title="Please log in to see info">Info</a>
-                {% else %}
-                    <a href="{% url "login" %}?next=/info">Info</a> 
-                {% endif %}
+            
+            <div class="hamburger">
+                <div class="burger_top"></div>
+                <div class="burger_middle"></div>
+                <div class="burger_bottom"></div>
             </div>
-            <div class='navlink'>
-                {% if user.is_authenticated %}
-                    <a href={% url "registry" %}>Registry</a>
-                {% else %}
-                    <a href="{% url "login" %}?next={% url "registry" %}">Registry</a> 
-                {% endif %}
-            </div>
-            <div class='navlink'>
-                {% if user.is_authenticated %}
-                    <a href={% url "forum" %}>Forum</a>
-                {% else %}
-                    <a href="{% url "login" %}?next={% url "forum" %}">Forum</a> 
-                {% endif %}
-            </div>
-        </div>
 
-        <div class='account_links'>
-            <div>
+            <nav>
+            
                 {% if user.is_authenticated %}
-                    <div class='profile_pic'>
-                        <a href="{% url "account-info" %}"><img src="{{ user.profile_pic.url }}"/></a>
+                    <div class="profile_image_container">
+                        <a href="{% url "account-info" %}"><img src="{{ user.profile_pic.url }}" title={{ user.username }} class="profile_image"/></a>
                     </div>
-                    {{ user.username }}
-                    <a href={% url "logout" %}>Logout</a>
+                
                 {% else %}
-                    <a href="{% url "login" %}{% if request.path != "/accounts/login/" %}?next={{ request.path }} {% endif %}">Login</a>                       
+                    <div class="login">
+                        <a href="{% url "login" %}{% if request.path != "/accounts/login/" %}?next={{ request.path }} {% endif %}">Login</a>                       
+                    </div>
+                  
+                    
                 {% endif %}
-            </div>
-        </div>
+                
+                <div class="navlinks">
+                    <ul>
+                        <li>
+                            <a href={% url "home" %}>Home</a>
+                        </li>
+                        <li>
+                            {% if user.is_authenticated %}
+                                <a href={% url "info" %}>Info</a>
+                            {% else %}
+                                <a href="{% url "login" %}?next=/info">Info</a> 
+                            {% endif %}
+                        </li>
+                        <li>
+                            {% if user.is_authenticated %}
+                                <a href={% url "registry" %}>Registry</a>
+                            {% else %}
+                                <a href="{% url "login" %}?next={% url "registry" %}">Registry</a> 
+                            {% endif %}
+                        </li>
+                        <li>
+                            {% if user.is_authenticated %}
+                                <a href={% url "forum" %}>Forum</a>
+                            {% else %}
+                                <a href="{% url "login" %}?next={% url "forum" %}">Forum</a> 
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+    
+                {% if user.is_authenticated %}
+                    <div class='logout_mobile'>
+                        <a href={% url "logout" %}>Logout</a> 
+                    </div>
+                {% endif %}
+    
+            </nav>
+        </header>
+
         
+
         {% block content %}
         
         {% endblock %}
