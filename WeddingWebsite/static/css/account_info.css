@@ -1,0 +1,92 @@
+.background {
+    width: 100%;
+    background-image: url("https://images.unsplash.com/photo-1533119408463-b0f487583ff6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80");
+    background-size: cover;
+    position: relative;
+    z-index: -1;
+    min-height: calc(100vh - var(--heading_height));
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    gap: 10px;
+    max-width: 1024px;
+    padding: 10px;
+}
+
+.main a span {
+    position: absolute; 
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.main li {
+    position: relative;
+    width: 100%;
+    font-size: 2rem;
+    padding: 10px 20px;
+    background-color: var(--faded_background_color);
+    border-radius: 10px;
+    box-shadow: 
+        rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, 
+        rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    font-family: "Poppins", "Libre Baskerville", serif;
+    list-style-type: none;
+}
+
+.main li:hover {
+    transform: scale(1.02);
+    transition: var(--quick_transition);
+}
+
+@media only screen and (max-width: 480px) {
+    
+}
+
+@media only screen and (min-width: 481px) and (max-width: 699px) {
+    
+}
+
+@media only screen and (min-width: 700px) and (max-width: 1024px) {
+    .main {
+        justify-content: flex-start;
+        margin-top: 50px;
+        gap: 10px;
+    }
+
+    .main li {
+        width: 400px;
+        font-size: 2rem;
+        padding: 10px 20px;
+    }
+} 
+
+@media only screen and (min-width: 1025px) {
+    .main {
+        justify-content: flex-start;
+        margin-top: 50px;
+        gap: 10px;
+    }
+
+    .main li {
+        width: 400px;
+        font-size: 2rem;
+        padding: 10px 20px;
+    }
+}

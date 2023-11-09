@@ -1,15 +1,22 @@
 {% extends "base.html" %}
 {% load static %}
-    {% block page_title %}Account Information{% endblock %}
 
-    {% block css_file %}<link rel="stylesheet" href="{% static 'css/account_info.css' %}">{% endblock %}
+{% block page_title %}Account Information{% endblock %}
 
-    {% block content %}
-    <div class="movecenter">
-        <a href="{% url "change-password" %}">Change Password</a>
-        <br>
-        <br>
-        <a href="{% url "change-profile-pic" %}">Change Profile Picture</a>
-        
-    </div>
-    {% endblock %}
+{% block css_file %}<link rel="stylesheet" href="{% static 'css/account_info.css' %}">{% endblock %}
+
+{% block content %}
+<div class="background">
+    <ul class="main">
+        <li>
+            <a href="{% url "change-password" %}">Change Password<span></span></a>
+        </li>
+        <li>
+            <a href="{% url "change-profile-pic" %}">Change Profile Picture<span></span></a>
+        </li>
+        <li>
+            <a href={% url "logout" %}>Logout<span></span></a> 
+        </li>
+    </ul>
+</div>
+{% endblock %}

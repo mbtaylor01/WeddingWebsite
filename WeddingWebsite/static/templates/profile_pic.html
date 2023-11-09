@@ -2,12 +2,21 @@
 {% load static %}
 {% block page_title %}{{ user.username }} - Change Picture{% endblock %}
 
-{% block css_file %}<link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+{% block css_file %}<link rel="stylesheet" href="{% static 'css/profile_pic.css' %}">{% endblock %}
 
 {% block content %}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Change</button>
-</form>
+<div class="background">
+    <main>
+        <div class="large_profile_pic_container">
+            <img src="{{ user.profile_pic.url }}" title={{ user.username }} class="profile_image"/>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.profile_pic }}
+            <button type="submit">Update</button>
+        </form>
+    </main>
+</div>
+
+
 {% endblock %}
