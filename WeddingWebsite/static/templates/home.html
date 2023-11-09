@@ -1,27 +1,32 @@
 {% extends "base.html" %}
 {% load static %}
-    {% block page_title %}
-    Carder-Taylor Wedding
-    {% endblock %}
 
-    {% block css_file %}<link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+{% block page_title %}Carder-Taylor Wedding{% endblock %}
 
-    {% block content %}
-    
-    <div class='date_rsvp'>
+{% block css_file %}<link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+
+{% block content %}
+
+<main>
+    <div class="main_image_container">
+        <img src="{% static 'page_images/home.jpg' %}"/>
+    </div>
+    <div class="date_and_rsvp">
         <div class='date'>
-            <p>June 30th, 2024</p>
+            <h1><span class="nowrap">June </span>29th, 2024</h1>
         </div>
         <div class='rsvp'>
             {% if user.is_authenticated%}
                 {% if not user.rsvp %}
-                    <a href="{% url 'rsvp' %}"><button type='button'>RSVP</button></a>
+                    <a href="{% url 'rsvp' %}">RSVP</a>
                 {% else %}
-                    You have RSVP'd - Thank You!
+                    <p>You have RSVP'd - Thank You!</p>
                 {% endif %}
             {% else %}
-                <a href="{% url "login" %}?next={% url 'rsvp' %}">Log in to RSVP</a>
+                <a href="{% url "login" %}?next={% url 'rsvp' %}">RSVP</a>
             {% endif %}
         </div>
     </div>
-    {% endblock %}
+</main>
+
+{% endblock %}
