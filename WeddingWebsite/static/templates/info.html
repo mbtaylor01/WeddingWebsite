@@ -1,6 +1,43 @@
 {% extends "base.html" %}
-    {% block page_title %}Information{% endblock %}
+{% load static %}
 
-    {% block content %}
-    INFO
-    {% endblock %}
+{% block page_title %}Information{% endblock %}
+
+{% block css_file %}<link rel="stylesheet" href="{% static 'css/info.css' %}">{% endblock %}
+
+{% block content %}
+<main>
+    <div class="date_time">
+        <h2>Date and Time</h2>
+        <p>June 29th, 2024</p>
+        <p>5:00pm</p>
+        <div data-tockify-component="mini" data-tockify-calendar="mark.taylor"></div>
+        <script data-cfasync="false" data-tockify-script="embed" src="https://public.tockify.com/browser/embed.js"></script>
+    </div>
+    <div class="location">
+        <h2>Location</h2>
+        <p>Douglas County KS Fairgrounds,<span class="no_wrap"> Building 21</span></p>
+        <p>Lawrence, KS 66046</p>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3102.985646024685!2d-95.21743531060382!3d38.94715629877896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87bf670372ec86a9%3A0xefdf967100da4f49!2sDouglas%20County%20Fairgrounds%20-%20Building%2021!5e0!3m2!1sen!2sus!4v1698118102718!5m2!1sen!2sus" width="600" height="450" style="border:1px solid lightgrey;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div class="schedule">
+        <h2>Schedule</h2>
+        <p>Coming soon...</p>
+    </div>
+    <div class="menu">
+        <h2>Menu</h2>
+        <ul>
+            <li>Tacos</li>
+            <li>Rice & beans</li>
+            <li>Cake</li>
+            <li>Margaritas</li>
+            <li>Soft drinks</li>
+            <li>Beer</li>
+        </ul>
+    </div>
+    <div class="open_bar">
+        <h2>Open Bar!</h2>
+    </div>
+    <!-- <iframe width="425" height="350" src="https://www.openstreetmap.org/export/embed.html?bbox=-95.22638082504274%2C38.93935021670801%2C-95.19805669784547%2C38.953818994553394&amp;layer=mapnik&amp;marker=38.94658497477169%2C-95.21221876144409" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/?mlat=38.9466&amp;mlon=-95.2122#map=16/38.9466/-95.2122">View Larger Map</a></small> -->
+</main>
+{% endblock %}
