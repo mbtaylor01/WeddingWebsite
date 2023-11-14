@@ -1,33 +1,43 @@
 {% extends "base.html" %}
 {% load static %}
-    {% block page_title %}Registry{% endblock %}
 
-    {% block css_file %}<link rel="stylesheet" href="{% static 'css/registry.css' %}">{% endblock %}
+{% block page_title %}Registry{% endblock %}
 
-    {% block content %}
-    
-    <ul class="registry">
+{% block css_file %}<link rel="stylesheet" href="{% static 'css/registry.css' %}">{% endblock %}
+
+{% block content %}
+
+<div class="background">
+    <main>
         {% for item in registry_items %}
-            <li>{{ item.title }}<br>
-                <a href="{{ item.image_link }}"><img src="{% static item.image.name|cut:"images/" %}"/></a>
-                {% if item.reserved_by %}
-                    {% if item.reserved_by == request.user %}
+            <div class="item_container">
+                <div class="item_image">
+                    <a href="{{ item.image_link }}"><img src="{% static item.image.name|cut:"images/" %}"/></a>
+                </div>
+                <div class="item_title">
+                    <a href="{{ item.image_link }}"><h2>{{ item.title }}</h2></a>
+                </div>
+                <div class="item_reserved_status">
+                    {% if item.reserved_by %}
+                        {% if item.reserved_by == request.user %}
+                            <form action="{% url "reserve-item" %}" method="POST">
+                                {%csrf_token%}
+                                <input type="hidden" name="item_id" value={{ item.id }}>
+                                <button>Reserved! Click to unreserve.</button>
+                            </form>
+                        {% else %}
+                            <p>Another guest has reserved this item.</p>
+                        {% endif %}
+                    {% else %}
                         <form action="{% url "reserve-item" %}" method="POST">
                             {%csrf_token%}
                             <input type="hidden" name="item_id" value={{ item.id }}>
-                        <button>RESERVED - Click to Unreserve</button>
-                    </form>
-                    {% else %}
-                        Another user has reserved this item.
+                            <button>Reserve</button>
+                        </form>
                     {% endif %}
-                {% else %}
-                    <form action="{% url "reserve-item" %}" method="POST">
-                        {%csrf_token%}
-                        <input type="hidden" name="item_id" value={{ item.id }}>
-                    <button>Reserve</button>
-                </form>
-                {% endif %}
-            </li><br>
+                </div>
+            </div>
         {% endfor %}
-    </ul>
-    {% endblock %}
+    </main>
+</div>
+{% endblock %}
