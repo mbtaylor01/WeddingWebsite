@@ -8,7 +8,7 @@ class RSVP(models.Model):
     additional_people = models.PositiveSmallIntegerField(null=True, blank=True)
     allergies = models.CharField(max_length=1000, blank=True)
     alcohol = models.CharField(max_length=1000, blank=True)
-    other = models.CharField(max_length=5000, blank=True)
+    other = models.TextField(max_length=5000, blank=True)
 
     def __str__(self):
         try:
