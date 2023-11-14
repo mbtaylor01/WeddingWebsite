@@ -103,7 +103,7 @@ class RegistryPostTests(TestCase):
         )
         self.assertRedirects(
             response, 
-            expected_url=reverse("thankyou"),
+            expected_url=reverse("registry"),
             status_code=302,
             target_status_code=200,
         )

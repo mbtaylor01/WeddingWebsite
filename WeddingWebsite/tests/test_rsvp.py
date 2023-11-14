@@ -55,7 +55,7 @@ class RSVPPostTests(TestCase):
         )
         self.assertRedirects(
             response, 
-            expected_url=reverse("thankyou"),
+            expected_url=reverse("home"),
             status_code=302,
             target_status_code=200,
         )
@@ -89,7 +89,7 @@ class RSVPPostTests(TestCase):
                 "other": "testtesttest",
             },
         )
-        self.assertTemplateNotUsed(response, "thankyou.html")
+        self.assertTemplateNotUsed(response, "home.html")
         self.assertTemplateUsed(response, "rsvp.html")
         assert len(RSVP.objects.all()) == 0
 
