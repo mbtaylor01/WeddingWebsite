@@ -3,6 +3,8 @@
     --faded_background_color: rgba(255, 255, 255, 0.9);
     --quick_transition: transform .03s ease;
     --increase_scale_transform: scale(1.1);
+    --background_image: url("https://images.unsplash.com/photo-1614876753060-0751185c9289?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1978&q=80");
+    
 }
 
 * { 
