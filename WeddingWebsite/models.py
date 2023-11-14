@@ -47,7 +47,7 @@ class Thread(models.Model):
         return self.title
     
 class Post(models.Model):
-    creator = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
+    creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     edited = models.BooleanField(default=False)
 
