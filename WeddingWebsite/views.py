@@ -83,17 +83,19 @@ class RegistryPostView(LoginRequiredMixin, View):
         return HttpResponseRedirect(reverse("registry"))
 
 
-class ForumListView(LoginRequiredMixin, ListView):
+class ThreadListView(LoginRequiredMixin, ListView):
     template_name = "forum.html"
     model = Thread
     context_object_name = "threads"
+    paginate_by = 10
+    ordering = ['creation_time']
 
 
-class ThreadListView(LoginRequiredMixin, ListView):
+class PostListView(LoginRequiredMixin, ListView):
     template_name = "thread.html"
     model = Post
     context_object_name = "posts"
-    paginate_by = 20
+    paginate_by = 10
     ordering = ['id']  # always order by when posts were created
 
     def post(self, request, threadslug):
