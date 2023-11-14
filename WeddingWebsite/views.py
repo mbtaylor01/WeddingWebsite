@@ -30,7 +30,7 @@ class RSVPPageView(LoginRequiredMixin, CreateView):
     model = RSVP
     form_class = RSVPForm
     template_name = "rsvp.html"
-    success_url = reverse_lazy("thankyou")
+    success_url = reverse_lazy("home")
 
     def get(self, *args, **kwargs):
         # if the user has already rsvp'd then don't want them to be able to rsvp again
@@ -45,10 +45,7 @@ class RSVPPageView(LoginRequiredMixin, CreateView):
         user.rsvp = self.object
         user.save()
         return super().form_valid(form)
-
-
-class ThankYouView(TemplateView):
-    template_name = "thankyou.html"
+    
 
 class PasswordChangeSuccessView(TemplateView):
     template_name = "password_change_success.html"
@@ -77,8 +74,6 @@ class RegistryPostView(LoginRequiredMixin, View):
         elif not reg_entry.reserved_by:  # the reserve button
             reg_entry.reserved_by = request.user
             reg_entry.save()
-        else:  # the item is reserved, but the page still displays the reserve button
-            return HttpResponseRedirect(reverse('thankyou'))
         
         return HttpResponseRedirect(reverse("registry"))
 
