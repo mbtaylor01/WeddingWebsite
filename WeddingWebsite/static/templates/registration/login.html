@@ -1,20 +1,25 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block css_file %}<link rel="stylesheet" href="{% static 'css/login.css' %}">{% endblock %}
+
 {% block content %}
 {% comment %} If redirecting to a page that's not the home page {% endcomment %}
-{% if next and next != '/' %}  
-    Please log in to continue:
-    <br><br>
-{% endif %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Log In</button>
-</form>
+<div class="background">
+    <main>
+        <form method="post">
+            {% csrf_token %}
+            {% if next and next != '/' %}  
+                <h1>Please log in to continue...</h1>
+            {% endif %}
+            {{ form }}
+            <button type="submit">Log In</button>
+        </form>
 
-<br><br>
-<a href="{% url "reset-password" %}">Forgot Password?</a>
+        <a href="{% url "reset-password" %}">Forgot Password?</a>
+    </main>
+</div>
 
-    
 {% endblock content %}
 
