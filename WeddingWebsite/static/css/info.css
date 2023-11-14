@@ -1,3 +1,12 @@
+.background {
+    width: 100%;
+    background-image: url("https://images.unsplash.com/photo-1533119408463-b0f487583ff6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80");
+    background-size: cover;
+    position: relative;
+    z-index: -1;
+    min-height: calc(100vh - var(--heading_height));
+}
+
 main {
     width: 100%;
     position: relative;
@@ -13,18 +22,6 @@ main {
     gap: 2vh;
     max-width: 1024px;
     padding: 10px;
-    z-index: -1;
-}
-
-main::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-image: url("https://images.unsplash.com/photo-1533119408463-b0f487583ff6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80");
-    background-size: cover;
     z-index: -1;
 }
 
@@ -56,6 +53,12 @@ main div ul {
 
 main .location p {
     text-align: center;
+}
+
+main .date_time iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
 }
 
 .no_wrap {
@@ -102,17 +105,44 @@ main .location p {
 }
 
 .open_bar {
-    background-color: transparent;
+    background-color: var(--faded_background_color);
+    flex-direction: row;
+    justify-content: center;
 }
 
-.open_bar h2::before,
-.open_bar h2::after {
-    content: "🍺";
-    margin: 10px;
+.beer {
+    font-size: 3rem;
+    margin: 0 5px;
+    background-color: paleturquoise;
+    padding: 2px;
+    border-radius: 10px;
+}
+
+.beer_left {
+    animation-name: "bounce";
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+.beer_right {
+    animation-name: "bounce";
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: .1s;
+}
+
+@keyframes bounce {
+   0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 
+   40% {transform: translateY(-20px);} 
+   60% {transform: translateY(-10px);} 
 }
 
 @media only screen and (max-width: 480px) {
-    
+    main .date_time iframe {
+        width: 100%;
+        height: 100%;
+        min-height: 300px;
+    }
 }
 
 @media only screen and (min-width: 481px) and (max-width: 799px) {
@@ -120,6 +150,8 @@ main .location p {
         columns: 3 120px;
         margin-left: 40px;
     }
+
+    
 }
 
 @media only screen and (min-width: 800px) and (max-width: 1024px) {
@@ -158,18 +190,6 @@ main .location p {
         margin-left: auto;
         margin-right: auto;
         padding: 10px;
-        z-index: -1;
-    }
-
-    main::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: calc(-1 * ((100vw - 1024px) / 2));
-        right: calc(-1 * ((100vw - 1024px) / 2));
-        background-image: url("https://images.unsplash.com/photo-1533119408463-b0f487583ff6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80");
-        background-size: cover;
         z-index: -1;
     }
 
