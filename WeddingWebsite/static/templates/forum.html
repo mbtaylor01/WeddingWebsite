@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load tz %}
 
 {% block page_title %}Forum{% endblock %}
 
@@ -22,8 +23,7 @@
                 <hr>
                 <div class="thread_info">
                     <div class="thread_creation_info">
-                        <!-- <p>Creator:</p> -->
-                        <p>Created: {{ thread.creation_time }}</p>
+                        <p>Created: {{ thread.creation_time|timezone:"US/Central" }} CST</p>
                     </div>
                     <div class="thread_creator">
                         <div class="profile_pic_container">

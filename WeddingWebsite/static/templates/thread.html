@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load tz %}
 {% block page_title %}
     {{ posts.0.thread.title }}
     {% if page_obj.paginator.num_pages > 1 %}
@@ -21,7 +22,7 @@
                         <img src="{{ post.creator.profile_pic.url }}" class="profile_image"/>
                     </div>
                     <p>{{ post.creator }}</p>
-                    <p> - {{ post.postversion_set.last.creation_time }}</p>
+                    <p> - {{ post.postversion_set.last.creation_time|timezone:"US/Central" }} CST</p>
                 </div>
                 <div class="post_text">
                     {{ post.postversion_set.last.text }}
