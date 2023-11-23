@@ -1,0 +1,71 @@
+.background {
+    width: 100%;
+    background-image: var(--background_image);
+    background-size: cover;
+    position: relative;
+    z-index: -1;
+    min-height: calc(100vh - var(--heading_height));
+}
+
+main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    gap: 20px;
+    max-width: 1024px;
+    padding: 10px;
+    min-height: calc(100vh - var(--heading_height));
+    justify-content: center;
+}
+
+main .pet_image_container {
+    width: 80vw;
+    height: 80vw;
+    max-width: 400px;
+    max-height: 400px;
+    
+}
+
+main .pet_image_container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    padding: 10px;
+    background-color: var(--faded_background_color);
+}
+
+main .error_text_container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-size: 1.5rem;
+    font-family: "Poppins", "Libre Baskerville", serif;
+    padding: 10px 20px;
+    background-color: var(--faded_background_color);
+    border-radius: 10px;
+    box-shadow: 
+        rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, 
+        rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+@media only screen and (max-width: 480px) {
+    
+}
+
+@media only screen and (min-width: 481px) and (max-width: 699px) {
+    
+}
+
+@media only screen and (min-width: 700px) and (max-width: 1024px) {
+    
+} 
+
+@media only screen and (min-width: 1025px) {
+    
+}

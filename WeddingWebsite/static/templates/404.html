@@ -5,7 +5,15 @@
 {% block css_file %}<link rel="stylesheet" href="{% static 'css/404.css' %}">{% endblock %}
 
 {% block content %}
-<div class="movecenter">
-    <img src="{% static random_image %}"/>
+<div class="background">
+    <main>
+        <div class="pet_image_container">
+            <img src="{% static random_image %}"/>
+        </div>
+        <div class="error_text_container">
+            <h2>What you haven't found:<br>the page you were looking for :(</h2>
+            <h2>What you have found:<br>an adorable pup</h2>
+        </div>
+    </main>
 </div>
 {% endblock %}
