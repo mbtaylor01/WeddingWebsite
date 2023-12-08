@@ -1,31 +1,33 @@
 import os
-from django.shortcuts import render
+from pathlib import Path
+from random import choice
+
+from .models import RSVP, RegistryEntry, Thread, Post, CustomUser, PostVersion
+from .forms import ThreadForm, CustomUserForm, RSVPForm, PostVersionForm
+
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
-from .models import RSVP, RegistryEntry, Thread, Post, CustomUser, PostVersion
-from django.contrib.auth import logout
-from django.views.generic import ListView, CreateView
-from .forms import ThreadForm, CustomUserForm, RSVPForm, PostVersionForm
-from django.utils.text import slugify
-from django.shortcuts import redirect
-from pathlib import Path
 from django.conf import settings
+from django.utils.text import slugify
+
+from django.views.generic import View, ListView, CreateView
 from django.views.generic.base import TemplateView
-from django.views.generic import View
-from random import choice
+
+from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-PET_DIR = os.path.join(settings.BASE_DIR, "WeddingWebsite", "static", "pet_images")
-PET_IMAGES = [str(image.name) for image in os.scandir(PET_DIR)]
-
+# view for the home page
 class HomePageView(TemplateView):
     template_name = "home.html"
 
 
+# view for the informational page
 class InfoPageView(LoginRequiredMixin, TemplateView):
     template_name = "info.html"
 
 
+# view that shows the RSVP form
 class RSVPPageView(LoginRequiredMixin, CreateView):
     model = RSVP
     form_class = RSVPForm
@@ -39,7 +41,7 @@ class RSVPPageView(LoginRequiredMixin, CreateView):
         return super(RSVPPageView, self).get(*args, **kwargs)
     
     def form_valid(self, form):
-        # save the object with form.save(), then add that object to the appropriate user (one-to-one)
+        # save the RSVP object with form.save(), then add that object to the appropriate user (one-to-one)
         self.object = form.save()
         user = self.request.user
         user.rsvp = self.object
@@ -47,16 +49,19 @@ class RSVPPageView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
     
 
+# view after successfully changing your password
 class PasswordChangeSuccessView(TemplateView):
     template_name = "password_change_success.html"
 
 
+# logout view
 class LogoutView(View):
     def get(self, request):
         logout(request)
         return HttpResponseRedirect(reverse("home"))
     
 
+# main registry view that shows all the items
 class RegistryListView(LoginRequiredMixin, ListView):
     template_name = "registry.html"
     model = RegistryEntry
@@ -64,20 +69,24 @@ class RegistryListView(LoginRequiredMixin, ListView):
     ordering = "title"
 
 
+# view when a user reserves an item
 class RegistryPostView(LoginRequiredMixin, View):
     def post(self, request):
         reg_entry = RegistryEntry.objects.get(id=request.POST['item_id'])
 
-        if reg_entry.reserved_by == request.user:  # the unreserve button
+        # user unreserves an item
+        if reg_entry.reserved_by == request.user:
             reg_entry.reserved_by = None
             reg_entry.save()
-        elif not reg_entry.reserved_by:  # the reserve button
+        # user reserves an item
+        elif not reg_entry.reserved_by:  
             reg_entry.reserved_by = request.user
             reg_entry.save()
         
         return HttpResponseRedirect(reverse("registry"))
 
 
+# view that shows all the forum threads
 class ThreadListView(LoginRequiredMixin, ListView):
     template_name = "forum.html"
     model = Thread
@@ -86,46 +95,59 @@ class ThreadListView(LoginRequiredMixin, ListView):
     ordering = ['creation_time']
 
 
+# view for a single thread
 class PostListView(LoginRequiredMixin, ListView):
     template_name = "thread.html"
     model = Post
     context_object_name = "posts"
     paginate_by = 10
-    ordering = ['id']  # always order by when posts were created
+    # always order by when posts were created
+    ordering = ['id']
 
     def post(self, request, threadslug):
+        # create a new Post object
         new_post = Post()
+
+        # assign it the current user and thread
         user = request.user
         new_post.creator = user
         new_post.thread = Thread.objects.get(slug=threadslug)
 
         new_post.save()
 
+        # create a new PostVersion object
         new_postversion = PostVersion()
+
+        # assign it the text of the post and the new Post object
         new_postversion.text = request.POST['text']
         new_postversion.post = new_post
 
         new_postversion.save()
 
+        # go back to the new post's thread
         return redirect(new_post.thread)
 
-    def get_context_data(self, **kwargs):  # add a postform context to every page in the thread
+    def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
+        # add a PostVersionForm context to every page in the thread
         form = PostVersionForm()
         context['form'] = form
         return context
 
-    def get_queryset(self):  # only show the posts with thread_id of the current thread
+    def get_queryset(self):
+        # only show the posts with thread_id of the current thread
         current_thread = Thread.objects.get(slug=self.kwargs['threadslug'])
         base_query = super().get_queryset()
         data = base_query.filter(thread=current_thread)
         return data
     
 
+# view for creating a new thread
 class CreateThreadView(LoginRequiredMixin, TemplateView):
     template_name = "create_thread.html"
 
     def get_context_data(self, **kwargs):
+        # add a ThreadForm context to the view
         context =  super().get_context_data(**kwargs)
         form = ThreadForm()
         context['form'] = form
@@ -134,25 +156,32 @@ class CreateThreadView(LoginRequiredMixin, TemplateView):
     def post(self, request):
         user = request.user
  
+        # create a new Thread object and assign it a title, creator, and slug
         new_thread = Thread()
         new_thread.title = request.POST['title']
         new_thread.creator = user
         new_thread.slug = slugify(new_thread.title)
         new_thread.save()
 
+        # create a new Post object and assign it a creator and the new Thread object as its thread
         first_post = Post()
         first_post.creator = user
         first_post.thread = new_thread
         first_post.save()
 
+        '''create a new PostVersion object and assign it the text of the post 
+        and assign it the new Post object as its post'''
         new_postversion = PostVersion()
         new_postversion.text = request.POST['first_post']
         new_postversion.post = first_post
 
         new_postversion.save()
 
+        # go back to the main forum page
         return redirect("forum")
     
+
+# view for editing a post
 class EditPostView(LoginRequiredMixin, TemplateView):
     template_name = "edit_post.html"
 
@@ -160,12 +189,15 @@ class EditPostView(LoginRequiredMixin, TemplateView):
         context =  super().get_context_data(**kwargs)
         context['threadslug'] = self.kwargs['threadslug']
         context['post_id'] = self.kwargs['id']
+        # the most recent postversion text is what we want to display for a post
         context['post_text'] = Post.objects.get(id=self.kwargs['id']).postversion_set.last().text
+
         return context
 
     def get(self, *args, **kwargs):
         post = Post.objects.get(id=self.kwargs['id'])
-        if post.creator != self.request.user: # users can only get to their own posts
+        # users can only get to their own posts
+        if post.creator != self.request.user:
             return redirect('home')
 
         return super(EditPostView, self).get(*args, **kwargs)
@@ -177,59 +209,72 @@ class EditPostView(LoginRequiredMixin, TemplateView):
         if post.creator == request.user:
             current_text = post.postversion_set.last().text
             new_post_text = request.POST['post_text']
-
+            # only save if the new text is different from the old text
             if current_text != new_post_text: 
                 new_postversion = PostVersion()
                 new_postversion.text = new_post_text
                 new_postversion.post = post
 
                 new_postversion.save()
-
+                # mark the post as edited
                 post.edited = True
                 post.save()
             
             return redirect(post.thread)
        
         return redirect('home')
-        
-    
 
+
+# view for changing a user's profile picture
 class ChangeProfilePic(LoginRequiredMixin, TemplateView):
     template_name = "profile_pic.html"
 
     @staticmethod
+    # after a user changes their profile picture, delete the unused pictures
     def delete_unused_profile_pics():
+        # get a list of all the current user images
         customuser_images = [Path(object.profile_pic.url).name for object in CustomUser.objects.all()]
         profile_pics_path = os.path.join(settings.BASE_DIR, "uploads", "profile_pics")
+
         for image in os.scandir(profile_pics_path):
             try:
+                # if the image is not used
                 if image.name not in customuser_images and os.path.isfile(image.path):
                     os.remove(image.path)
-            except FileNotFoundError:  # If two users change their pictures at the same time
+            # if two users change their pictures at the same time
+            except FileNotFoundError:  
                 pass
         
-    def get_context_data(self, **kwargs):  # add a postform context to every page in the thread
+    def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
+        # add a CustomUserForm context to access the user's profile picture
         form = CustomUserForm()
         context['form'] = form
         return context
     
     def post(self, request):
         user = request.user
+        # update the user's CustomUser object
         form = CustomUserForm(request.POST, request.FILES, instance=user)
  
         if form.is_valid():
             form.save()
         
         self.delete_unused_profile_pics()
-
-        return redirect(user)
+        # go back to the profile-pic page
+        return reverse("change-profile-pic")
     
 
+# view for selecting Change Password, Change Profile Picture, or Logout
 class AccountInfoView(LoginRequiredMixin, TemplateView):
     template_name = "account_info.html"
 
 
+# directory where different pet images for the 404 page are stored
+PET_DIR = os.path.join(settings.BASE_DIR, "WeddingWebsite", "static", "pet_images")
+PET_IMAGES = [str(image.name) for image in os.scandir(PET_DIR)]
+
+# custom 404 page shows a random pet image each time
 def error_404(request, *args, **kwargs):
    random_pet = choice(PET_IMAGES)
 
