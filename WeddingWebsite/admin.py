@@ -31,8 +31,8 @@ class RegistryAdmin(admin.ModelAdmin):
     list_display = ("title", "reserved_by")
 
 class RSVPAdmin(admin.ModelAdmin): 
-    list_filter = ("additional_people", "allergies", "alcohol", "other")
-    list_display = ("user", "additional_people", "allergies", "alcohol", "other")
+    list_filter = ("party_size", "allergies", "alcohol", "other")
+    list_display = ("user", "party_size", "allergies", "alcohol", "other")
 
     def user(self, instance):
         # display one-to-one linked customuser.username field in Admin panel

@@ -5,13 +5,13 @@ from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 
 class RSVP(models.Model):
-    additional_people = models.PositiveSmallIntegerField(null=True, blank=True)
+    party_size = models.PositiveSmallIntegerField(null=True, blank=True)
     allergies = models.CharField(max_length=1000, blank=True)
     alcohol = models.CharField(max_length=1000, blank=True)
     other = models.TextField(max_length=5000, blank=True)
 
     def __str__(self):
-        return f"{self.additional_people}"
+        return f"{self.party_size}"
         
 
 class CustomUser(AbstractUser):
