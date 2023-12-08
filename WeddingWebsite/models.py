@@ -11,10 +11,8 @@ class RSVP(models.Model):
     other = models.TextField(max_length=5000, blank=True)
 
     def __str__(self):
-        try:
-            return f"{self.customuser.username} + {self.additional_people}"
-        except RSVP.customuser.RelatedObjectDoesNotExist:
-            return "-"
+        return f"{self.additional_people}"
+        
 
 class CustomUser(AbstractUser):
     profile_pic = models.ImageField(upload_to="profile_pics", default="profile_pics/default/default.png")
