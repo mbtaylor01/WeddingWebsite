@@ -44,6 +44,7 @@ MIDDLEWARE = [
 ]
 
 if secret_info.whitenoise:
+    # if using whitenoise
     MIDDLEWARE.insert(0, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 ROOT_URLCONF = 'Wedding.urls'
@@ -73,8 +74,10 @@ WSGI_APPLICATION = 'Wedding.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = secret_info.databases
-if "BASE_DIR" in DATABASES["default"]["NAME"]:
-    DATABASES["default"]["NAME"] = eval(DATABASES["default"]["NAME"])
+# if using sqlite
+if "BASE_DIR" in DATABASES["default"]["NAME"]:  
+    # eval uses value stored in BASE_DIR instead of "BASE_DIR"
+    DATABASES["default"]["NAME"] = eval(DATABASES["default"]["NAME"])  
 
 
 # Password validation
@@ -111,6 +114,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+STATIC_ROOT = BASE_DIR / "prodstatic"
 STATIC_URL = 'prodstatic/'
 
 # Default primary key field type
@@ -125,11 +129,10 @@ MEDIA_ROOT = BASE_DIR / "uploads"
 MEDIA_URL = "/uploads/"
 
 STATICFILES_DIRS = [
+    # replace "//" to stop Django complaining about WindowsFilePath instead of string
     f"{BASE_DIR}/uploads/images/".replace("\\", "/"), 
     f"{BASE_DIR}/uploads/profile_pics/default/".replace("\\", "/"),
 ]
-
-STATIC_ROOT = BASE_DIR / "prodstatic"
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = secret_info.email_host
