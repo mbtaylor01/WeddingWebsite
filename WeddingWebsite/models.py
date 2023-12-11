@@ -26,7 +26,7 @@ class CustomUser(AbstractUser):
     rsvp = models.OneToOneField(RSVP, on_delete=models.SET_NULL, null=True, blank=True)
 
     def get_absolute_url(self):
-        return reverse("change-profile-pic")
+        return reverse("account-info")
 
 
 class RegistryEntry(models.Model):
