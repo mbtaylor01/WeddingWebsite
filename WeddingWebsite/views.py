@@ -38,7 +38,7 @@ class RSVPPageView(LoginRequiredMixin, CreateView):
         # if the user has already rsvp'd then don't want them to be able to rsvp again
         if self.request.user.rsvp:
             return redirect('home')
-        return super(RSVPPageView, self).get(*args, **kwargs)
+        return super().get(*args, **kwargs)
     
     def form_valid(self, form):
         # save the RSVP object with form.save(), then add that object to the appropriate user (one-to-one)
@@ -200,7 +200,7 @@ class EditPostView(LoginRequiredMixin, TemplateView):
         if post.creator != self.request.user:
             return redirect('home')
 
-        return super(EditPostView, self).get(*args, **kwargs)
+        return super().get(*args, **kwargs)
 
     def post(self, request, threadslug, id):
         post = Post.objects.get(id=id)
