@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 
 class RSVP(models.Model):
-    party_size = models.PositiveSmallIntegerField(null=True, blank=True)
+    party_size = models.PositiveSmallIntegerField()
     allergies = models.CharField(max_length=1000, blank=True)
     alcohol = models.CharField(max_length=1000, blank=True)
     other = models.TextField(max_length=5000, blank=True)
