@@ -17,18 +17,25 @@ from django.views.generic.base import TemplateView
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-# view for the home page
+
 class HomePageView(TemplateView):
+    """
+    View for the home page.
+    """
     template_name = "home.html"
 
 
-# view for the informational page
 class InfoPageView(LoginRequiredMixin, TemplateView):
+    """
+    View for the informational page.
+    """
     template_name = "info.html"
 
 
-# view that shows the RSVP form
 class RSVPPageView(LoginRequiredMixin, CreateView):
+    """
+    View that shows the RSVP form.
+    """
     model = RSVP
     form_class = RSVPForm
     template_name = "rsvp.html"
@@ -49,28 +56,36 @@ class RSVPPageView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
     
 
-# view after successfully changing your password
 class PasswordChangeSuccessView(TemplateView):
+    """
+    View after successfully changing your password.
+    """
     template_name = "password_change_success.html"
 
 
-# logout view
 class LogoutView(View):
+    """
+    Logout view.    
+    """
     def get(self, request):
         logout(request)
         return HttpResponseRedirect(reverse("home"))
     
 
-# main registry view that shows all the items
 class RegistryListView(LoginRequiredMixin, ListView):
+    """
+    Main registry view that shows all the items.
+    """
     template_name = "registry.html"
     model = RegistryEntry
     context_object_name = "registry_items"
     ordering = "title"
 
 
-# view when a user reserves an item
 class RegistryPostView(LoginRequiredMixin, View):
+    """
+    View when a user reserves an item.
+    """
     def post(self, request):
         reg_entry = RegistryEntry.objects.get(id=request.POST['item_id'])
 
@@ -86,8 +101,10 @@ class RegistryPostView(LoginRequiredMixin, View):
         return HttpResponseRedirect(reverse("registry"))
 
 
-# view that shows all the forum threads
 class ThreadListView(LoginRequiredMixin, ListView):
+    """
+    View that shows all the forum threads.
+    """
     template_name = "forum.html"
     model = Thread
     context_object_name = "threads"
@@ -95,8 +112,10 @@ class ThreadListView(LoginRequiredMixin, ListView):
     ordering = ['creation_time']
 
 
-# view for a single thread
 class PostListView(LoginRequiredMixin, ListView):
+    """
+    View for a single thread.
+    """
     template_name = "thread.html"
     model = Post
     context_object_name = "posts"
@@ -142,8 +161,10 @@ class PostListView(LoginRequiredMixin, ListView):
         return data
     
 
-# view for creating a new thread
 class CreateThreadView(LoginRequiredMixin, TemplateView):
+    """
+    View for creating a new thread.
+    """
     template_name = "create_thread.html"
 
     def get_context_data(self, **kwargs):
@@ -181,8 +202,10 @@ class CreateThreadView(LoginRequiredMixin, TemplateView):
         return redirect("forum")
     
 
-# view for editing a post
 class EditPostView(LoginRequiredMixin, TemplateView):
+    """
+    View for editing a post.
+    """
     template_name = "edit_post.html"
 
     def get_context_data(self, **kwargs):
@@ -225,8 +248,10 @@ class EditPostView(LoginRequiredMixin, TemplateView):
         return redirect('home')
 
 
-# view for changing a user's profile picture
 class ChangeProfilePic(LoginRequiredMixin, TemplateView):
+    """
+    View for changing a user's profile picture.
+    """
     template_name = "profile_pic.html"
 
     @staticmethod
@@ -265,8 +290,10 @@ class ChangeProfilePic(LoginRequiredMixin, TemplateView):
         return reverse("change-profile-pic")
     
 
-# view for selecting Change Password, Change Profile Picture, or Logout
 class AccountInfoView(LoginRequiredMixin, TemplateView):
+    """
+    View for selecting Change Password, Change Profile Picture, or Logout.
+    """
     template_name = "account_info.html"
 
 
@@ -274,14 +301,14 @@ class AccountInfoView(LoginRequiredMixin, TemplateView):
 PET_DIR = os.path.join(settings.BASE_DIR, "WeddingWebsite", "static", "pet_images")
 PET_IMAGES = [str(image.name) for image in os.scandir(PET_DIR)]
 
-# custom 404 page shows a random pet image each time
 def error_404(request, *args, **kwargs):
-   random_pet = choice(PET_IMAGES)
+    """
+    Custom 404 page shows a random pet image each time.
+    """
+    random_pet = choice(PET_IMAGES)
 
-   return render(request, 
+    return render(request, 
                 "404.html", 
                 {"random_image": f"pet_images/{random_pet}"}, 
                 status=404
             )
-
-
