@@ -47,7 +47,7 @@ class RSVPPostTests(TestCase):
         response = self.cli.post(
             reverse("rsvp"), 
             data={
-                "additional_people": "5",
+                "party_size": "5",
                 "allergies": "none",
                 "alcohol": "test",
                 "other": "testtesttest",
@@ -66,7 +66,7 @@ class RSVPPostTests(TestCase):
         response = self.cli.post(
             reverse("rsvp"), 
             data={
-                "additional_people": "5",
+                "party_size": "5",
                 "allergies": "none",
                 "alcohol": "test",
                 "other": "testtesttest",
@@ -84,7 +84,7 @@ class RSVPPostTests(TestCase):
         response = self.cli.post(
             reverse("rsvp"), 
             data={
-                "additional_people": "string",
+                "party_size": "string",
                 "alcohol": "test",
                 "other": "testtesttest",
             },
@@ -98,11 +98,10 @@ class RSVPModelTests(TestCase):
         rsvps = baker.make(RSVP, _fill_optional=True, _quantity=100)
         assert len(rsvps) == 100
 
-    def test_str_method_with_user(self):
+    def test_str_method(self):
         customuser = baker.make(CustomUser, _fill_optional=True)
         rsvp = baker.make(RSVP, customuser=customuser, _fill_optional=True,)
-        assert "+" in rsvp.__str__()
-        
-    def test_str_method_without_user(self):
-        rsvp = baker.make(RSVP, _fill_optional=True,)
-        assert "+" not in rsvp.__str__() and "-" in rsvp.__str__()
+        try:
+            int(rsvp.__str__())
+        except ValueError:
+            assert False
