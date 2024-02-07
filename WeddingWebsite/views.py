@@ -79,7 +79,8 @@ class RegistryListView(LoginRequiredMixin, ListView):
     template_name = "registry.html"
     model = RegistryEntry
     context_object_name = "registry_items"
-    ordering = "title"
+    # we want the unreservable items at the bottom
+    ordering = "-is_reservable"
 
 
 class RegistryPostView(LoginRequiredMixin, View):

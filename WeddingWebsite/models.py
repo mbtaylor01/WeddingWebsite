@@ -39,6 +39,8 @@ class RegistryEntry(models.Model):
     image_link = models.URLField()
     # users can reserve an item
     reserved_by = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
+    # certain items like honeymoon donations should not be reservable
+    is_reservable = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title

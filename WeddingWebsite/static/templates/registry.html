@@ -18,7 +18,9 @@
                     <a href="{{ item.image_link }}"><h2>{{ item.title }}</h2></a>
                 </div>
                 <div class="item_reserved_status">
-                    {% if item.reserved_by %}
+                    {% if not item.is_reservable %}
+                        <p>Anyone can give!</p>
+                    {% elif item.reserved_by %}
                         {% if item.reserved_by == request.user %}
                             <form action="{% url "reserve-item" %}" method="POST">
                                 {%csrf_token%}
