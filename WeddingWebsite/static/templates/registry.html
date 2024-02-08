@@ -19,22 +19,22 @@
                 </div>
                 <div class="item_reserved_status">
                     {% if not item.is_reservable %}
-                        <p>Anyone can give!</p>
+                        <p>Anything is appreciated!</p>
                     {% elif item.reserved_by %}
                         {% if item.reserved_by == request.user %}
                             <form action="{% url "reserve-item" %}" method="POST">
                                 {%csrf_token%}
                                 <input type="hidden" name="item_id" value={{ item.id }}>
-                                <button>Reserved! Click to unreserve.</button>
+                                <button>You have reserved this item!<br>Click to unreserve.</button>
                             </form>
                         {% else %}
-                            <p>Another guest has reserved this item.</p>
+                            <p>Another guest is bringing this item.</p>
                         {% endif %}
                     {% else %}
                         <form action="{% url "reserve-item" %}" method="POST">
                             {%csrf_token%}
                             <input type="hidden" name="item_id" value={{ item.id }}>
-                            <button>Reserve</button>
+                            <button>Click here if bringing this item!<br>Click picture to purchase.</button>
                         </form>
                     {% endif %}
                 </div>
