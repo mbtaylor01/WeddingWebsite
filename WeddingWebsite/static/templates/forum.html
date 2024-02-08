@@ -29,7 +29,7 @@
                         <div class="profile_pic_container">
                             <img src="{{ thread.creator.profile_pic.url }}" class="profile_image"/>
                         </div>
-                        <p>{{ thread.creator }}</p>
+                        <p>{{ thread.creator.first_name }} {{ thread.creator.last_name }}</p>
                     </div>
                 </div>
                 <hr>
@@ -42,7 +42,7 @@
                         <div class="profile_pic_container">
                             <img src="{{ thread.post_set.last.creator.profile_pic.url }}" class="profile_image"/>
                         </div>
-                        <p>{{ thread.post_set.last.creator }}</p>
+                        <p>{{ thread.post_set.last.creator.first_name }} {{ thread.post_set.last.creator.last_name }}</p>
                     </div>
                 </div>
             </div>
