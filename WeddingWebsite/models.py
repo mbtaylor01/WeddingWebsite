@@ -53,7 +53,8 @@ class Thread(models.Model):
     title = models.CharField(max_length=500)
     creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     creation_time = models.DateTimeField(default=timezone.now, blank=True)
-    slug = models.SlugField(default="")
+    # default slug has max_length 50 and if title exceeds 50 a 500 error is thrown
+    slug = models.SlugField(max_length=500, default="")
 
     def get_absolute_url(self):
         return reverse("thread", kwargs={
