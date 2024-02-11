@@ -1,3 +1,4 @@
+import secret_info
 from .views import (
     HomePageView, InfoPageView, RSVPPageView, LogoutView, AccountInfoView, 
     RegistryListView, RegistryPostView, ThreadListView, PostListView, 
@@ -30,7 +31,7 @@ urlpatterns = [
     path("change-password", auth_views.PasswordChangeView.as_view(success_url=reverse_lazy("password-change-success"), template_name="change_password.html"), name="change-password"),
     path("password-change-success", PasswordChangeSuccessView.as_view(), name="password-change-success"),
 
-    path("reset-password", auth_views.PasswordResetView.as_view(success_url=reverse_lazy("reset-password-sent")), name="reset-password"),
+    path("reset-password", auth_views.PasswordResetView.as_view(success_url=reverse_lazy("reset-password-sent"), extra_context={"email_host_user": secret_info.email_host_user}), name="reset-password"),
     path("reset-password-sent", auth_views.PasswordResetDoneView.as_view(), name="reset-password-sent"),
     path("reset/<uidb64>/<token>", auth_views.PasswordResetConfirmView.as_view(success_url=reverse_lazy("reset-password-success")), name="reset-password-confirm"),
     path("reset-password-success", auth_views.PasswordResetCompleteView.as_view(), name="reset-password-success"),
