@@ -37,6 +37,16 @@ main form {
     width: 100%;
 }
 
+main form h2 {
+    font-style: italic;
+    font-size: 2rem;
+}
+
+main form h2 a {
+    /* font-style: normal; */
+    text-decoration: underline;
+}
+
 main form label {
     font-size: 2.5rem;
 }

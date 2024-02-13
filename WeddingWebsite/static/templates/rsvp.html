@@ -10,6 +10,7 @@
     <main>
         <form method="post">
             {% csrf_token %}
+            <h2>Please see the <a href={% url "info" %}>Info</a> page after submitting your RSVP.</h2>
             {% for item in form %}
                 <div class="rsvp_field">
                     {{ item.label_tag }}
