@@ -25,7 +25,7 @@
                             <form action="{% url "reserve-item" %}" method="POST">
                                 {%csrf_token%}
                                 <input type="hidden" name="item_id" value={{ item.id }}>
-                                <button>You have reserved this item!<br>Click to unreserve.</button>
+                                <p>You have reserved this item!</p><button>Click to unreserve.</button>
                             </form>
                         {% else %}
                             <p>Another guest is bringing this item.</p>
@@ -34,7 +34,7 @@
                         <form action="{% url "reserve-item" %}" method="POST">
                             {%csrf_token%}
                             <input type="hidden" name="item_id" value={{ item.id }}>
-                            <button>Click here if bringing this item!<br>Click picture to purchase.</button>
+                            <button>Click here if bringing this item!</button><br><p>Click picture to purchase.</p>
                         </form>
                     {% endif %}
                 </div>

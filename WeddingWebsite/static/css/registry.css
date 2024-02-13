@@ -56,23 +56,31 @@ main .item_container:hover {
     font-family: "Libre Baskerville", "Poppins", "Times New Roman", serif;
 }
 
+.item_reserved_status form {
+    text-align: center;
+    padding: 5px 10px 0 10px;
+}
+
 .item_reserved_status button {
     font-family: "Poppins", "Libre Baskerville", serif;
     font-size: 1.5rem;
-    padding: 5px 10px 0 10px;
     background-color: transparent;
     border: none;
+    text-decoration: underline;
 }
 
 .item_reserved_status button:hover {
     cursor: pointer;
-    text-decoration: underline;
 }
 
 .item_reserved_status p {
     font-family: "Poppins", "Libre Baskerville", serif;
     font-size: 1.5rem;
     font-style: italic;
+}
+
+.item_reserved_status form p {
+    font-style: normal;
 }
 
 @media only screen and (max-width: 480px) {
