@@ -16,7 +16,8 @@ main {
             "b"
             "c"
             "d"
-            "e";
+            "e"
+            "f";
     margin-left: auto;
     margin-right: auto;
     gap: 2vh;
@@ -77,12 +78,16 @@ main .date_time iframe {
     grid-area: c;
 }
 
-.schedule {
+.dress_code {
     grid-area: d;
 }
 
-.open_bar {
+.schedule {
     grid-area: e;
+}
+
+.open_bar {
+    grid-area: f;
 }
 
 .open_bar h2 {
@@ -164,7 +169,8 @@ main .date_time iframe {
             "a b"
             "c b"
             "d d"
-            "e e";
+            "e e"
+            "f f";
         margin-left: auto;
         margin-right: auto;
         padding: 10px;
@@ -186,7 +192,8 @@ main .date_time iframe {
             "a b"
             "c b"
             "d d"
-            "e e";
+            "e e"
+            "f f";
         margin-left: auto;
         margin-right: auto;
         padding: 10px;
