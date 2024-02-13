@@ -141,3 +141,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = secret_info.email_host_user
 EMAIL_HOST_PASSWORD = secret_info.email_host_password
 ADMINS = secret_info.admins
+# emails should appear to be from the specified email host user instead of webmaster@localhost
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
