@@ -59,11 +59,11 @@ class RegistryPageTests(TestCase):
         baker.make(RegistryEntry, title="registry_item_1")
         response = self.cli.get(reverse("registry"))
         self.assertContains(response, "registry_item_1")
-        self.assertContains(response, "Reserve")
-        self.assertNotContains(response, "Reserved! Click to unreserve.")
+        self.assertContains(response, "Click here if bringing this item!")
+        self.assertNotContains(response, "Click to unreserve.")
         baker.make(RegistryEntry, title="registry_item_2", reserved_by=self.user)
         response = self.cli.get(reverse("registry"))
-        self.assertContains(response, "Reserved! Click to unreserve.")
+        self.assertContains(response, "Click to unreserve.")
 
 
 class RegistryPostTests(TestCase):
@@ -97,7 +97,7 @@ class RegistryPostTests(TestCase):
             status_code=302,
             target_status_code=200,
         )
-        self.assertContains(response, "Reserved! Click to unreserve.")
+        self.assertContains(response, "Click to unreserve.")
 
     def test_user_unreserving_item_when_logged_in(self):
         """
@@ -117,8 +117,8 @@ class RegistryPostTests(TestCase):
             status_code=302,
             target_status_code=200,
         )
-        self.assertNotContains(response, "Reserved! Click to unreserve.")
-        self.assertContains(response, "Reserve")
+        self.assertNotContains(response, "Click to unreserve.")
+        self.assertContains(response, "Click here if bringing this item!")
 
     def test_user_reserving_item_when_not_logged_in(self):
         """
