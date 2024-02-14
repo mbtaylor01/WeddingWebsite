@@ -288,7 +288,7 @@ class ChangeProfilePic(LoginRequiredMixin, TemplateView):
         
         self.delete_unused_profile_pics()
         # go back to the profile-pic page
-        return reverse("change-profile-pic")
+        return redirect("change-profile-pic")
     
 
 class AccountInfoView(LoginRequiredMixin, TemplateView):
