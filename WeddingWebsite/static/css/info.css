@@ -17,7 +17,8 @@ main {
             "c"
             "d"
             "e"
-            "f";
+            "f"
+            "g";
     margin-left: auto;
     margin-right: auto;
     gap: 2vh;
@@ -43,12 +44,18 @@ main div {
 main div h2 {
     font-size: 2.5rem;
     font-family: "Libre Baskerville", "Poppins", "Times New Roman", serif;
+    text-align: center;
 }
 
 main div p,
 main div ul {
     font-family: "Poppins", "Libre Baskerville", serif;
     font-size: 1.5rem;
+}
+
+main div a {
+    text-decoration: underline;
+    color: blue
 }
 
 main .location p {
@@ -77,16 +84,20 @@ main .date_time iframe {
     grid-area: c;
 }
 
-.dress_code {
+.hotel {
     grid-area: d;
 }
 
-.schedule {
+.dress_code {
     grid-area: e;
 }
 
-.open_bar {
+.schedule {
     grid-area: f;
+}
+
+.open_bar {
+    grid-area: g;
 }
 
 .open_bar h2 {
@@ -105,6 +116,10 @@ main .date_time iframe {
 
 .menu ul {
     columns: 2 120px;
+    margin-left: 40px;
+}
+
+.hotel ul {
     margin-left: 40px;
 }
 
@@ -169,7 +184,8 @@ main .date_time iframe {
             "c b"
             "d d"
             "e e"
-            "f f";
+            "f f"
+            "g g";
         margin-left: auto;
         margin-right: auto;
         padding: 10px;
@@ -192,7 +208,8 @@ main .date_time iframe {
             "c b"
             "d d"
             "e e"
-            "f f";
+            "f f"
+            "g g";
         margin-left: auto;
         margin-right: auto;
         padding: 10px;

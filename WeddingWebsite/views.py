@@ -1,4 +1,5 @@
 import os
+import secret_info
 from pathlib import Path
 from random import choice
 
@@ -30,6 +31,12 @@ class InfoPageView(LoginRequiredMixin, TemplateView):
     View for the informational page.
     """
     template_name = "info.html"
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        # add the email address users can email for help
+        context['email_host_user'] = secret_info.email_host_user
+        return context
 
 
 class RSVPPageView(LoginRequiredMixin, CreateView):
