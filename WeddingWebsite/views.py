@@ -1,4 +1,4 @@
-import os
+import os, json
 import secret_info
 from pathlib import Path
 from random import choice
@@ -7,7 +7,7 @@ from .models import RSVP, RegistryEntry, Thread, Post, CustomUser, PostVersion
 from .forms import ThreadForm, CustomUserForm, RSVPForm, PostVersionForm
 
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.conf import settings
 from django.utils.text import slugify
@@ -89,24 +89,28 @@ class RegistryListView(LoginRequiredMixin, ListView):
     # we want the unreservable items at the bottom and everthing else ordered by title
     ordering = ["-is_reservable", "title"]
 
-
+    
 class RegistryPostView(LoginRequiredMixin, View):
     """
     View when a user reserves an item.
     """
     def post(self, request):
-        reg_entry = RegistryEntry.objects.get(id=request.POST['item_id'])
+        reg_entry = RegistryEntry.objects.get(id=json.loads(request.body)["item_id"])
 
-        # user unreserves an item
-        if reg_entry.reserved_by == request.user:
-            reg_entry.reserved_by = None
-            reg_entry.save()
-        # user reserves an item
-        elif not reg_entry.reserved_by:  
-            reg_entry.reserved_by = request.user
-            reg_entry.save()
-        
-        return HttpResponseRedirect(reverse("registry"))
+        # if AJAX request
+        if request.accepts("application/json"):
+            # user unreserves an item
+            if reg_entry.reserved_by == request.user:
+                reg_entry.reserved_by = None
+                reg_entry.save()
+                return JsonResponse({}, status=200)
+            # user reserves an item
+            elif not reg_entry.reserved_by:  
+                reg_entry.reserved_by = request.user
+                reg_entry.save()
+                return JsonResponse({}, status=200)
+
+        return JsonResponse({}, status=401)
 
 
 class ThreadListView(LoginRequiredMixin, ListView):
