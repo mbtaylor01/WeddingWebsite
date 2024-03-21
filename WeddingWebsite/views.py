@@ -98,7 +98,10 @@ class RegistryPostView(LoginRequiredMixin, View):
         return redirect("home")
 
     def post(self, request):
-        reg_entry = RegistryEntry.objects.get(id=json.loads(request.body)["item_id"])
+        try:
+            reg_entry = RegistryEntry.objects.get(id=json.loads(request.body)["item_id"])
+        except RegistryEntry.DoesNotExist:
+            return JsonResponse({}, status=400)
 
         # if AJAX request
         if request.accepts("application/json"):
