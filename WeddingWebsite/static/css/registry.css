@@ -37,6 +37,10 @@ main .item_container.reserved {
     background-color: orange;
 }
 
+main .item_container.unavailable {
+    background-color: rgb(180, 180, 180);
+}
+
 main .item_container:hover {
     transform: scale(1.02);
     transition: var(--quick_transition);

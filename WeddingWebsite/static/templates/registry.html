@@ -15,6 +15,8 @@
             <!-- add a class to the item container if the item is reserved so we can change its color -->
             {% if item.reserved_by == request.user and item.is_reservable %}
                 <div class="item_container reserved">
+            {% elif item.reserved_by and item.is_reservable %}
+                <div class="item_container unavailable">
             {% else %}
                 <div class="item_container">
             {% endif %}
